@@ -1,0 +1,54 @@
+<?php
+
+// app/Http/Controllers/Api/EventDiscoveryController.php
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Http\Resources\EventResource;
+use App\Http\Traits\ApiResponse;
+use App\Models\Event;
+use Illuminate\Http\Request;
+
+class EventDiscoveryController extends Controller
+{
+    use ApiResponse;
+
+    public function index(Request $request)
+    {
+        $query = Event::query()->where('status', 'published')->with('school');
+
+        if ($request->filled('category')) {
+            $query->where('category', $request->category);
+        }
+
+        if ($request->filled('location')) {
+            $query->where('location', 'like', "%{$request->location}%");
+        }
+
+        if ($request->filled('date_from')) {
+            $query->whereDate('event_date', '>=', $request->date_from);
+        }
+
+        if ($request->filled('date_to')) {
+            $query->whereDate('event_date', '<=', $request->date_to);
+        }
+
+        if ($request->filled('max_booth_price')) {
+            $query->where('booth_price', '<=', $request->max_booth_price);
+        }
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', "%{$request->search}%");
+        }
+
+        $events = $query->latest('event_date')->paginate(12);
+
+        return $this->success('Daftar event.', EventResource::collection($events)->response()->getData(true));
+    }
+
+    public function show(string $slug)
+    {
+        $event = Event::where('slug', $slug)->where('status', 'published')->with('school')->firstOrFail();
+        return $this->success('Detail event.', new EventResource($event));
+    }
+}
