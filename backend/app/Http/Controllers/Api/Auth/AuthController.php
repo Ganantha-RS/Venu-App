@@ -1,68 +1,223 @@
 <?php
 
-// app/Http/Controllers/Api/Auth/AuthController.php
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\{RegisterRequest, LoginRequest};
-use App\Http\Traits\ApiResponse;
+use App\Models\School;
 use App\Models\User;
-use Illuminate\Support\Facades\{Auth, Hash};
+use App\Models\UmkmProfile;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
-    use ApiResponse;
-
-    public function register(RegisterRequest $request)
+    public function register(Request $request): JsonResponse
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
+        $validated = $request->validate([
+            'role' => [
+                'required',
+                Rule::in(['school', 'umkm']),
+            ],
+
+            'email' => [
+                'required',
+                'email',
+                'unique:users,email',
+            ],
+
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+            ],
+
+            // Field School
+            'school_name' => [
+                'required_if:role,school',
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'npsn' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'position' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'address' => [
+                'nullable',
+                'string',
+            ],
+
+            // Field UMKM
+            'business_name' => [
+                'required_if:role,umkm',
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'category' => [
+                'required_if:role,umkm',
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'products' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            // Shared
+            'phone' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
         ]);
 
-        if ($user->role === 'school') {
-            $user->school()->create(['school_name' => $user->name]);
-        } else {
-            $user->umkmProfile()->create([
-                'business_name' => $user->name,
-                'category' => 'uncategorized',
-                'location' => '-',
+        $result = DB::transaction(function () use ($validated) {
+
+            /*
+             * 1. Buat user utama
+             */
+            $user = User::create([
+                'name' => $validated['role'] === 'school'
+                    ? $validated['school_name']
+                    : $validated['business_name'],
+
+                'email' => $validated['email'],
+
+                'role' => $validated['role'],
+
+                'password' => Hash::make($validated['password']),
             ]);
-        }
 
-        $token = $user->createToken('venu-token')->plainTextToken;
 
-        return $this->success('Registrasi berhasil.', [
-            'user' => $user,
-            'token' => $token,
+            /*
+             * 2. Buat profile berdasarkan role
+             */
+            if ($validated['role'] === 'school') {
+
+                School::create([
+                    'user_id' => $user->id,
+                    'school_name' => $validated['school_name'],
+                    'npsn' => $validated['npsn'] ?? null,
+                    'position' => $validated['position'] ?? null,
+                    'address' => $validated['address'] ?? null,
+                    'phone' => $validated['phone'] ?? null,
+                ]);
+
+            } else {
+
+                UmkmProfile::create([
+                    'user_id' => $user->id,
+                    'business_name' => $validated['business_name'],
+                    'category' => $validated['category'],
+                    'products' => $validated['products'] ?? null,
+                    'phone' => $validated['phone'] ?? null,
+                    'location' => null,
+                ]);
+            }
+
+
+            /*
+             * 3. Buat token Sanctum
+             */
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return [
+                'user' => $user,
+                'token' => $token,
+            ];
+        });
+
+
+        /*
+         * 4. Response ke frontend
+         */
+        return response()->json([
+            'success' => true,
+            'message' => 'Registrasi berhasil.',
+            'data' => $result,
         ], 201);
     }
 
-    public function login(LoginRequest $request)
+
+    public function login(Request $request): JsonResponse
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return $this->error('Email atau password salah.', [], 401);
+        $validated = $request->validate([
+            'email' => [
+                'required',
+                'email',
+            ],
+
+            'password' => [
+                'required',
+                'string',
+            ],
+        ]);
+
+        $user = User::where('email', $validated['email'])->first();
+
+        if (!$user || !Hash::check($validated['password'], $user->password)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Email atau kata sandi salah.',
+            ], 401);
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
-        $token = $user->createToken('venu-token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
-        return $this->success('Login berhasil.', [
-            'user' => $user,
-            'token' => $token,
+        return response()->json([
+            'success' => true,
+            'message' => 'Login berhasil.',
+            'data' => [
+                'user' => $user,
+                'token' => $token,
+            ],
         ]);
     }
 
-    public function logout()
+
+    public function logout(Request $request): JsonResponse
     {
-        auth()->user()->currentAccessToken()->delete();
-        return $this->success('Logout berhasil.');
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Logout berhasil.',
+        ]);
     }
 
-    public function me()
+
+    public function me(Request $request): JsonResponse
     {
-        return $this->success('Data user.', auth()->user());
+        $user = $request->user();
+
+        if ($user->role === 'school') {
+            $user->load('school');
+        } else {
+            $user->load('umkmProfile');
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'user' => $user,
+            ],
+        ]);
     }
 }

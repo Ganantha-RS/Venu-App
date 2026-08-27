@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('business_name');
+            $table->string('products')->nullable();
+            $table->string('phone')->nullable();
             $table->text('description')->nullable();
             $table->string('category');
-            $table->string('location');
+            $table->string('location')->nullable();
             $table->unsignedBigInteger('price_min')->nullable();
             $table->unsignedBigInteger('price_max')->nullable();
             $table->string('target_audience')->nullable();
