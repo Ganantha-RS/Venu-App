@@ -25,11 +25,17 @@ export default function Login() {
       // Format response dari AuthController:
       // success: true, data: { user: { ... }, token: '...' }
       const { user, token } = response.data.data;
-      
+
       login(user, token);
-      
-      // Redirect berdasarkan role atau ke homepage
-      navigate("/");
+
+      if (user.role === "school") {
+        navigate("/school", { replace: true });
+      } else if (user.role === "umkm") {
+        navigate("/umkm", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
+
     } catch (err) {
       console.error(err);
       if (err.response && err.response.data) {

@@ -48,33 +48,41 @@ export default function Register() {
 
     const payload = role === "school"
       ? {
-          role,
-          school_name: schoolName,
-          npsn,
-          email: schoolEmail,
-          phone: schoolPhone,
-          address: schoolAddress,
-          position: schoolPosition,
-          password: schoolPassword,
-        }
+        role,
+        school_name: schoolName,
+        npsn,
+        email: schoolEmail,
+        phone: schoolPhone,
+        address: schoolAddress,
+        position: schoolPosition,
+        password: schoolPassword,
+      }
       : {
-          role,
-          business_name: businessName,
-          category,
-          products,
-          phone: umkmPhone,
-          email: umkmEmail,
-          password: umkmPassword,
-        };
+        role,
+        business_name: businessName,
+        category,
+        products,
+        phone: umkmPhone,
+        email: umkmEmail,
+        password: umkmPassword,
+      };
 
     try {
       const response = await api.post("/auth/register", payload);
       // Format respon dari AuthController:
       // success: true, data: { user: { ... }, token: '...' }
       const { user, token } = response.data.data;
-      
+
       login(user, token);
-      navigate("/");
+
+      if (user.role === "school") {
+        navigate("/school", { replace: true });
+      } else if (user.role === "umkm") {
+        navigate("/umkm", { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
+
     } catch (err) {
       console.error(err);
       if (err.response && err.response.data) {
@@ -109,19 +117,17 @@ export default function Register() {
             <div
               onClick={() => setRole("school")}
               className={`relative flex flex-col items-center justify-center rounded-2xl border-2 p-6 text-center cursor-pointer transition
-                ${
-                  role === "school"
-                    ? "border-accent bg-accent/5"
-                    : "border-navy/10 bg-white hover:border-navy/30"
+                ${role === "school"
+                  ? "border-accent bg-accent/5"
+                  : "border-navy/10 bg-white hover:border-navy/30"
                 }`}
             >
               {/* Radio checkmark di pojok kanan atas */}
               <div
                 className={`absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full border
-                  ${
-                    role === "school"
-                      ? "border-accent bg-accent text-white"
-                      : "border-navy/20 bg-white"
+                  ${role === "school"
+                    ? "border-accent bg-accent text-white"
+                    : "border-navy/20 bg-white"
                   }`}
               >
                 {role === "school" && <Check size={14} />}
@@ -140,19 +146,17 @@ export default function Register() {
             <div
               onClick={() => setRole("umkm")}
               className={`relative flex flex-col items-center justify-center rounded-2xl border-2 p-6 text-center cursor-pointer transition
-                ${
-                  role === "umkm"
-                    ? "border-accent bg-accent/5"
-                    : "border-navy/10 bg-white hover:border-navy/30"
+                ${role === "umkm"
+                  ? "border-accent bg-accent/5"
+                  : "border-navy/10 bg-white hover:border-navy/30"
                 }`}
             >
               {/* Radio checkmark di pojok kanan atas */}
               <div
                 className={`absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full border
-                  ${
-                    role === "umkm"
-                      ? "border-accent bg-accent text-white"
-                      : "border-navy/20 bg-white"
+                  ${role === "umkm"
+                    ? "border-accent bg-accent text-white"
+                    : "border-navy/20 bg-white"
                   }`}
               >
                 {role === "umkm" && <Check size={14} />}
