@@ -41,7 +41,9 @@ class EventDiscoveryController extends Controller
             $query->where('name', 'like', "%{$request->search}%");
         }
 
-        $events = $query->latest('event_date')->paginate(12);
+        $limit = min((int) $request->input('limit', 12), 50);
+
+        $events = $query->latest('event_date')->paginate($limit);
 
         return $this->success('Daftar event.', EventResource::collection($events)->response()->getData(true));
     }
