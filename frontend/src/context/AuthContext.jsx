@@ -13,8 +13,7 @@ export function AuthProvider({ children }) {
       if (token) {
         try {
           const response = await api.get("/auth/me");
-          // Format respon API dari AuthController: { success: true, message: '...', data: user }
-          setUser(response.data.data);
+          setUser(response.data.data.user);
         } catch (error) {
           console.error("Failed to fetch authenticated user:", error);
           localStorage.removeItem("venu_token");

@@ -80,7 +80,6 @@ class AuthController extends Controller
                 'max:255',
             ],
 
-            // Shared
             'phone' => [
                 'nullable',
                 'string',
@@ -90,9 +89,7 @@ class AuthController extends Controller
 
         $result = DB::transaction(function () use ($validated) {
 
-            /*
-             * 1. Buat user utama
-             */
+           
             $user = User::create([
                 'name' => $validated['role'] === 'school'
                     ? $validated['school_name']
