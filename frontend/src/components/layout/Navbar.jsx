@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 const NAV_ITEMS = [
   { label: "Beranda", to: "/" },
   { label: "Event", to: "/events" },
-  { label: "UMKM", to: "/events" },
+  { label: "UMKM", to: "/umkm" },
   { label: "AI Match", to: "/ai-match" },
 ];
 
