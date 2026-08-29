@@ -1,12 +1,12 @@
-import { Bell, LogOut } from "lucide-react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Bell } from "lucide-react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/useAuth";
 
 const NAV_ITEMS = [
     { label: "Beranda", to: "/school" },
-    { label: "Event Saya", to: "/school/events" },
     { label: "AI Match", to: "/school/ai-match" },
-    { label: "Profil", to: "/school/profile" },
+    { label: "Event", to: "/school/events" },
+    { label: "Analitik", to: "/school/analytics" },
 ];
 
 export default function SchoolNavbar() {
@@ -20,24 +20,30 @@ export default function SchoolNavbar() {
 
     return (
         <header className="sticky top-0 z-50 bg-white shadow-sm">
-            <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-8">
-                <NavLink
+            <nav className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 md:px-8">
+                {/* Logo */}
+                <Link
                     to="/school"
-                    className="flex items-center gap-1 text-xl font-extrabold text-navy"
+                    className="flex shrink-0 items-center gap-1 text-xl font-extrabold tracking-tight text-navy"
+                    aria-label="VENU Beranda"
                 >
                     <span className="text-accent">V</span>ENU
-                </NavLink>
+                </Link>
 
-                <ul className="hidden items-center gap-8 text-sm font-medium text-navy/70 md:flex">
+                {/* Navigation */}
+                <ul className="hidden items-center gap-8 text-sm font-medium text-navy/80 md:flex">
                     {NAV_ITEMS.map((item) => (
                         <li key={item.to}>
                             <NavLink
                                 to={item.to}
                                 end={item.to === "/school"}
                                 className={({ isActive }) =>
-                                    isActive
-                                        ? "border-b-2 border-accent pb-1 text-accent"
-                                        : "pb-1 hover:text-navy"
+                                    [
+                                        "relative py-1 transition-colors",
+                                        isActive
+                                            ? "font-semibold text-navy after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-accent"
+                                            : "hover:text-navy",
+                                    ].join(" ")
                                 }
                             >
                                 {item.label}
@@ -46,36 +52,38 @@ export default function SchoolNavbar() {
                     ))}
                 </ul>
 
-                <div className="flex items-center gap-4">
+                {/* User */}
+                <div className="flex items-center gap-3">
                     <button
                         type="button"
                         aria-label="Notifikasi"
-                        className="text-navy/70 hover:text-navy"
+                        className="text-navy/70 transition-colors hover:text-navy"
                     >
-                        <Bell size={20} />
+                        <Bell size={18} strokeWidth={1.8} />
                     </button>
 
-                    <div className="flex items-center gap-3">
-                        <div className="hidden text-right text-sm leading-tight md:block">
-                            <p className="font-semibold text-navy">{user?.name}</p>
-                            <p className="text-xs text-navy/50">Sekolah</p>
-                        </div>
-
+                    <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="flex items-center gap-2"
+                        aria-label="Akun pengguna"
+                    >
                         <img
                             src={user?.avatarUrl || "/default-avatar.png"}
-                            alt={user?.name || "User"}
-                            className="h-9 w-9 rounded-full object-cover"
+                            alt={user?.name || "Pengguna"}
+                            className="h-7 w-7 rounded-full object-cover"
                         />
 
-                        <button
-                            type="button"
-                            onClick={handleLogout}
-                            className="text-navy/50 transition hover:text-red-500"
-                            title="Keluar"
-                        >
-                            <LogOut size={18} />
-                        </button>
-                    </div>
+                        <div className="hidden text-left leading-tight md:block">
+                            <p className="text-xs font-semibold text-navy">
+                                {user?.name || "Pengguna"}
+                            </p>
+
+                            <p className="text-[9px] text-navy/45">
+                                Pihak Sekolah
+                            </p>
+                        </div>
+                    </button>
                 </div>
             </nav>
         </header>

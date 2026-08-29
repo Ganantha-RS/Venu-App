@@ -12,18 +12,20 @@ use App\Http\Controllers\Api\Umkm\ProfileController as UmkmProfileController;
 use App\Http\Controllers\Api\School\ApplicationController as SchoolApplicationController;
 use App\Http\Controllers\Api\School\MatchController as SchoolMatchController;
 use App\Http\Controllers\Api\Umkm\MatchController as UmkmMatchController;
+use App\Http\Controllers\Api\UmkmDiscoveryController;
 
 Route::prefix('v1')->group(function () {
+    // Public
     Route::post('auth/register', [AuthController::class, 'register']);
     Route::post('auth/login', [AuthController::class, 'login']);
+
+    Route::get('events', [EventDiscoveryController::class, 'index']);
+    Route::get('events/{slug}', [EventDiscoveryController::class, 'show']);
+    Route::get('umkms', [UmkmDiscoveryController::class, 'index']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::get('auth/me', [AuthController::class, 'me']);
-
-        // TODO: Harus dipindah ke luar auth:sanctum biar bisa diakses umum
-        Route::get('events', [EventDiscoveryController::class, 'index']);
-        Route::get('events/{slug}', [EventDiscoveryController::class, 'show']);
 
         Route::middleware('role:school')->prefix('school')->group(function () {
             Route::get('profile', [SchoolProfileController::class, 'show']);

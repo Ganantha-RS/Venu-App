@@ -15,7 +15,10 @@ class EventDiscoveryController extends Controller
 
     public function index(Request $request)
     {
-        $query = Event::query()->where('status', 'published')->with('school');
+        $query = Event::query()
+            ->where('status', 'published')
+            ->whereDate('event_date', '>=', now()->toDateString())
+            ->with('school');
 
         if ($request->filled('category')) {
             $query->where('category', $request->category);
@@ -41,11 +44,36 @@ class EventDiscoveryController extends Controller
             $query->where('name', 'like', "%{$request->search}%");
         }
 
-        $limit = min((int) $request->input('limit', 12), 50);
+        /*
+        * Homepage:
+        * GET /events?limit=3
+        */
+        if ($request->filled('limit')) {
+            $limit = min((int) $request->limit, 12);
 
-        $events = $query->latest('event_date')->paginate($limit);
+            $events = $query
+                ->orderBy('event_date', 'asc')
+                ->limit($limit)
+                ->get();
 
-        return $this->success('Daftar event.', EventResource::collection($events)->response()->getData(true));
+            return $this->success(
+                'Event terdekat.',
+                EventResource::collection($events)
+            );
+        }
+
+        /*
+        * Event Discovery:
+        * GET /events
+        */
+        $events = $query
+            ->orderBy('event_date', 'asc')
+            ->paginate(12);
+
+        return $this->success(
+            'Daftar event.',
+            EventResource::collection($events)->response()->getData(true)
+        );
     }
 
     public function show(string $slug)
