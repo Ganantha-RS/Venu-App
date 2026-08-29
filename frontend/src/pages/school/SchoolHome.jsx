@@ -1,21 +1,29 @@
 import SchoolNavbar from "../../components/layout/SchoolNavbar";
-import { useAuth } from "../../context/useAuth";
+import StatsBar from "../../components/common/StatsBar";
+import AiAssistantIntro from "../../components/common/AiAssistantIntro";
+import NearbyEvents from "../../components/common/NearbyEvents";
+import { useNearbyEvents } from "../../features/event-discovery/useNearbyEvents";
 
 export default function SchoolHome() {
-  const { user } = useAuth();
+  const { events, isLoading } = useNearbyEvents(3);
 
   return (
     <div className="min-h-screen bg-surface">
       <SchoolNavbar />
 
-      <main className="mx-auto max-w-7xl px-4 py-12 md:px-8">
-        <h1 className="text-3xl font-extrabold text-navy">
-          Selamat datang, {user?.name}
-        </h1>
+      <main>
+        {/* Hero nanti */}
+        <StatsBar />
 
-        <p className="mt-2 text-navy/60">
-          Ini adalah beranda untuk akun Sekolah.
-        </p>
+        <AiAssistantIntro
+          description="Disini aku akan membantu kamu menyinkronkan event kamu dengan UMKM yang bersedia untuk bekerjasama."
+          buttonText="Ayo sinkronkan"
+        />
+
+        <NearbyEvents
+          events={events}
+          isLoading={isLoading}
+        />
       </main>
     </div>
   );

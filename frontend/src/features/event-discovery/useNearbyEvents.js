@@ -8,23 +8,34 @@ export function useNearbyEvents(limit = 3) {
   useEffect(() => {
     let isMounted = true;
 
+    setIsLoading(true);
+
     getEvents({ limit })
-      .then((data) => {
+      .then((response) => {
         if (!isMounted) return;
 
-        const eventData = data?.data?.data ?? data?.data ?? data;
+        const eventData = response?.data ?? response;
 
-        setEvents(Array.isArray(eventData) ? eventData : []);
+        setEvents(
+          Array.isArray(eventData)
+            ? eventData
+            : []
+        );
       })
-      .catch((err) => {
-        console.error("Gagal memuat event terdekat:", err);
+      .catch((error) => {
+        if (!isMounted) return;
 
-        if (isMounted) {
-          setEvents([]);
-        }
+        console.error(
+          "Gagal memuat event terdekat:",
+          error
+        );
+
+        setEvents([]);
       })
       .finally(() => {
-        if (isMounted) setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       });
 
     return () => {
@@ -32,5 +43,8 @@ export function useNearbyEvents(limit = 3) {
     };
   }, [limit]);
 
-  return { events, isLoading };
+  return {
+    events,
+    isLoading,
+  };
 }
