@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Event extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'school_id', 'name', 'slug', 'description', 'category', 'event_date',
         'location', 'target_visitors', 'booth_capacity', 'booth_price', 'status',

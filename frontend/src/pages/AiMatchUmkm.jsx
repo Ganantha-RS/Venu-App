@@ -7,6 +7,7 @@ import MatchReasonList from "../components/ai-match/MatchReasonList";
 import MatchScoreBadge from "../components/ai-match/MatchScoreBadge";
 import Button from "../components/common/Button";
 import { CalendarDays, MapPin, Building2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function AiMatchUmkm() {
   const { matches, isLoading, error, reload } = useUmkmMatches();
@@ -42,6 +43,9 @@ export default function AiMatchUmkm() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 md:px-8">
+      <Link to="/umkm/ai-match" className="text-sm text-navy/50 hover:text-navy">
+        ← Kembali
+      </Link>
       <h1 className="text-3xl font-extrabold text-navy">
         Rekomendasi Event untuk <span className="text-accent">Usaha Kamu</span>
       </h1>

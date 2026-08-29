@@ -5,6 +5,7 @@ import MatchReasonList from "../components/ai-match/MatchReasonList";
 import MatchScoreBadge from "../components/ai-match/MatchScoreBadge";
 import Button from "../components/common/Button";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function AiMatchSchool() {
   const {
@@ -34,6 +35,9 @@ export default function AiMatchSchool() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 md:px-8">
+      <Link to="/school/ai-match" className="text-sm text-navy/50 hover:text-navy">
+        ← Kembali
+      </Link> 
       <h1 className="text-3xl font-extrabold text-navy">
         Temukan <span className="text-accent">UMKM yang Tepat</span> untuk Event Kamu
       </h1>

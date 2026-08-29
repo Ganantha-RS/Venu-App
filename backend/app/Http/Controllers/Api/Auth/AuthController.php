@@ -200,7 +200,7 @@ class AuthController extends Controller
     }
 
 
-    public function me(Request $request): JsonResponse
+        public function me(Request $request): JsonResponse
     {
         $user = $request->user();
 
@@ -212,9 +212,8 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => [
-                'user' => $user,
-            ],
+            'message' => 'Data user berhasil diambil.',
+            'data' => $user,
         ]);
     }
 }
