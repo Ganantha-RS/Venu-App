@@ -21,6 +21,7 @@ Route::prefix('v1')->group(function () {
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::get('auth/me', [AuthController::class, 'me']);
 
+        // TODO: Harus dipindah ke luar auth:sanctum biar bisa diakses umum
         Route::get('events', [EventDiscoveryController::class, 'index']);
         Route::get('events/{slug}', [EventDiscoveryController::class, 'show']);
 
