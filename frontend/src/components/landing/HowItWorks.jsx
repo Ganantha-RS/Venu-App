@@ -14,7 +14,7 @@ export default function HowItWorks() {
           {/* Gambar besar, di kanan atas */}
           <div className="absolute right-0 top-0 h-64 w-[85%] overflow-hidden rounded-2xl border-4 border-navy shadow-lg">
             <img
-              src="/assets/how-it-works-1.jpg"
+              src="/carakerja1.png"
               alt="Suasana tenant UMKM di event sekolah"
               className="h-full w-full object-cover"
             />
@@ -23,7 +23,7 @@ export default function HowItWorks() {
           {/* Gambar kecil, overlap di kiri bawah, sudut kiri-atas melengkung */}
           <div className="absolute bottom-0 left-0 h-64 w-[65%] overflow-hidden rounded-b-2xl rounded-tr-2xl rounded-tl-[4rem] border-4 border-navy shadow-lg">
             <img
-              src="/assets/how-it-works-2.jpg"
+              src="/carakerja2.png"
               alt="Pengunjung berbelanja di booth UMKM"
               className="h-full w-full object-cover"
             />
