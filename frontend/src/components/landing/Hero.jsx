@@ -43,7 +43,7 @@ export default function LandingHero() {
             Hubungkan Usahamu
           </span>
 
-          <h1 className="mt-6 text-4xl font-extrabold leading-tight text-navy sm:text-5xl md:text-5xl lg:text-6xl">
+          <h1 className="mt-6 text-4xl font-extrabold leading-tight text-navy sm:text-4xl md:text-4xl lg:text-5xl">
             Temukan Ruang
             <br />
             <span className="text-accent">Kembangkan Usaha</span>

@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 
 export default function AnalyticsShowcase({
-    image = "/analitik-showcase.png",
+    image = "/analitik_img.png",
     description,
     benefits = [],
     onClick,
@@ -26,7 +26,7 @@ export default function AnalyticsShowcase({
                 {/* CONTENT KANAN */}
                 <div className="max-w-xl">
                     <h2 className="text-3xl font-extrabold leading-tight text-black md:text-4xl">
-                        Analitik
+                        Analisis
                     </h2>
 
                     <p className="mt-2 max-w-lg text-sm leading-relaxed text-black md:text-[13px]">
@@ -79,7 +79,7 @@ export default function AnalyticsShowcase({
                         onClick={onClick}
                         className="mt-7 inline-flex items-center gap-3 rounded-full bg-navy px-7 py-2.5 text-xs font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-navy-light hover:shadow-md active:translate-y-0"
                     >
-                        Analitik
+                        Analisis
                         <ChevronRight size={16} strokeWidth={2.5} />
                     </button>
                 </div>

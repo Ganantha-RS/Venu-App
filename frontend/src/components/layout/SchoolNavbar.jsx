@@ -1,4 +1,5 @@
-import { Bell } from "lucide-react";
+import { Bell, Menu, X } from "lucide-react";
+import { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/useAuth";
 
@@ -6,31 +7,36 @@ const NAV_ITEMS = [
     { label: "Beranda", to: "/school" },
     { label: "AI Match", to: "/school/ai-match" },
     { label: "Event", to: "/school/events" },
-    { label: "Analitik", to: "/school/analytics" },
+    { label: "Analisis", to: "/school/analytics" },
 ];
 
 export default function SchoolNavbar() {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleLogout = async () => {
+        setIsMenuOpen(false);
         await logout();
         navigate("/", { replace: true });
     };
 
     return (
         <header className="sticky top-0 z-50 bg-white shadow-sm">
-            <nav className="mx-auto flex h-12 max-w-7xl items-center justify-between px-4 md:px-8">
-                {/* Logo */}
+            <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 md:h-12 md:px-8">
                 <Link
                     to="/school"
-                    className="flex shrink-0 items-center gap-1 text-xl font-extrabold tracking-tight text-navy"
+                    className="flex shrink-0 items-center text-xl font-extrabold tracking-tight text-navy"
                     aria-label="VENU Beranda"
                 >
-                    <span className="text-accent">V</span>ENU
+                    <img
+                        src="/logo-venu.svg"
+                        alt="Logo Venu"
+                        className="h-8"
+                    />
+                    <span className="ml-1">VENU</span>
                 </Link>
 
-                {/* Navigation */}
                 <ul className="hidden items-center gap-8 text-sm font-medium text-navy/80 md:flex">
                     {NAV_ITEMS.map((item) => (
                         <li key={item.to}>
@@ -52,8 +58,7 @@ export default function SchoolNavbar() {
                     ))}
                 </ul>
 
-                {/* User */}
-                <div className="flex items-center gap-3">
+                <div className="hidden items-center gap-3 md:flex">
                     <button
                         type="button"
                         aria-label="Notifikasi"
@@ -66,7 +71,7 @@ export default function SchoolNavbar() {
                         type="button"
                         onClick={handleLogout}
                         className="flex items-center gap-2"
-                        aria-label="Akun pengguna"
+                        aria-label="Keluar dari akun"
                     >
                         <img
                             src={user?.avatarUrl || "/default-avatar.png"}
@@ -74,18 +79,90 @@ export default function SchoolNavbar() {
                             className="h-7 w-7 rounded-full object-cover"
                         />
 
-                        <div className="hidden text-left leading-tight md:block">
+                        <div className="text-left leading-tight">
                             <p className="text-xs font-semibold text-navy">
                                 {user?.name || "Pengguna"}
                             </p>
-
                             <p className="text-[9px] text-navy/45">
                                 Pihak Sekolah
                             </p>
                         </div>
                     </button>
                 </div>
+
+                <button
+                    type="button"
+                    onClick={() => setIsMenuOpen((open) => !open)}
+                    aria-label={isMenuOpen ? "Tutup menu" : "Buka menu"}
+                    aria-expanded={isMenuOpen}
+                    className="rounded-lg p-2 text-navy transition-colors hover:bg-navy/5 md:hidden"
+                >
+                    {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
             </nav>
+
+            {isMenuOpen && (
+                <div className="border-t border-navy/10 bg-white px-4 pb-4 pt-2 shadow-md md:hidden">
+                    <ul className="flex flex-col">
+                        {NAV_ITEMS.map((item) => (
+                            <li key={item.to}>
+                                <NavLink
+                                    to={item.to}
+                                    end={item.to === "/school"}
+                                    onClick={() => setIsMenuOpen(false)}
+                                    className={({ isActive }) =>
+                                        [
+                                            "block rounded-lg px-3 py-3 text-sm font-semibold transition-colors",
+                                            isActive
+                                                ? "bg-accent/10 text-accent"
+                                                : "text-navy/70 hover:bg-navy/5 hover:text-navy",
+                                        ].join(" ")
+                                    }
+                                >
+                                    {item.label}
+                                </NavLink>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <div className="mt-2 flex items-center justify-between border-t border-navy/10 px-3 pt-4">
+                        <div className="flex items-center gap-3">
+                            <img
+                                src={user?.avatarUrl || "/default-avatar.png"}
+                                alt={user?.name || "Pengguna"}
+                                className="h-9 w-9 rounded-full object-cover"
+                            />
+
+                            <div className="leading-tight">
+                                <p className="text-sm font-semibold text-navy">
+                                    {user?.name || "Pengguna"}
+                                </p>
+                                <p className="text-[10px] text-navy/45">
+                                    Pihak Sekolah
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                            <button
+                                type="button"
+                                aria-label="Notifikasi"
+                                className="text-navy/70 transition-colors hover:text-navy"
+                            >
+                                <Bell size={19} strokeWidth={1.8} />
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={handleLogout}
+                                className="text-sm font-semibold text-red-500 transition-colors hover:text-red-600"
+                            >
+                                Keluar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </header>
     );
 }
