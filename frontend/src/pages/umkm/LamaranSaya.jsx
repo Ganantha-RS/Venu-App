@@ -132,11 +132,10 @@ export default function LamaranSaya() {
   }, [negoApp]);
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] font-sans text-[#111827]">
+    <div className="min-h-screen font-sans text-[#111827]">
       <UmkmNavbar />
 
       <main className="relative overflow-hidden">
-        {/* dot grid — sama kayak SchoolApplications */}
         <div className="pointer-events-none absolute right-10 top-10 hidden opacity-40 lg:block">
           <div className="grid grid-cols-8 gap-3">
             {Array.from({ length: 48 }).map((_, i) => (
@@ -146,7 +145,6 @@ export default function LamaranSaya() {
         </div>
 
         <div className="relative mx-auto max-w-[1220px] px-5 py-8 md:px-8 md:py-10">
-          {/* HERO — clean, tanpa biru full */}
           <section className="max-w-3xl">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#E5E7EB] bg-white px-3 py-1.5 shadow-sm">
               <FiInbox size={14} className="text-[#1677C8]" />

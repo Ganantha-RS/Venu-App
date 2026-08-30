@@ -13,6 +13,7 @@ import EventSaya from "../pages/school/EventSaya";
 import SchoolApplications from "../pages/school/SchoolApplications";
 import TenantManagement from "../pages/school/TenantManagement";
 import EventAnalytics from "../pages/school/EventAnalytics";
+import SchoolAnalyticsOverview from "../pages/school/SchoolAnalyticsOverview";
 import SchoolProfile from "../pages/school/SchoolProfile";
 import UmkmProfile from "../pages/umkm/UmkmProfile";
 import JelajahEvent from "../pages/umkm/JelajahEvent";
@@ -26,18 +27,19 @@ export default function AppRouter() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* Protected routes */}
-      <Route element={<ProtectedRoute allowedRole="school" />}> 
-              <Route path="/school" element={<SchoolHome />} />
-              <Route path="/school/events" element={<EventSaya />} />
-              <Route path="/school/ai-match" element={<SchoolAiMatchIntro />} />
-              <Route path="/school/ai-match/hasil" element={<AiMatchSchool />} />
-              <Route path="/school/applications" element={<SchoolApplications />} />
-              <Route path="/school/events/:eventId/tenants" element={<TenantManagement />} />
-              <Route path="/school/events/:eventId/analytics" element={<EventAnalytics />} />
-              <Route path="/school/profile" element={<SchoolProfile />} />
-            </Route>
+      {/* School */}
+      <Route element={<ProtectedRoute allowedRole="school" />}>
+        <Route path="/school" element={<SchoolHome />} />
+        <Route path="/school/events" element={<EventSaya />} />
+        <Route path="/school/ai-match" element={<SchoolAiMatchIntro />} />
+        <Route path="/school/ai-match/hasil" element={<AiMatchSchool />} />
+        <Route path="/school/applications" element={<SchoolApplications />} />
+        <Route path="/school/events/:eventId/tenants" element={<TenantManagement />} />
+        <Route path="/school/events/:eventId/analytics" element={<EventAnalytics />} />
+        <Route path="/school/profile" element={<SchoolProfile />} />
+      </Route>
 
+      {/* UMKM */}
       <Route element={<ProtectedRoute allowedRole="umkm" />}>
         <Route path="/umkm" element={<UmkmHome />} />
         <Route path="/umkm/events" element={<JelajahEvent />} />

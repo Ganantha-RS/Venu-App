@@ -20,6 +20,11 @@ class MatchController extends Controller
     {
         $this->authorize('manageApplications', $event);
 
+        // Ambil AI reason yang sudah ada di DB
+        $aiReasons = EventApplication::where('event_id', $event->id)
+            ->whereNotNull('match_reason_ai')
+            ->pluck('match_reason_ai', 'umkm_id');
+
         $umkms = UmkmProfile::query()
             ->when($request->filled('category'), fn($q) => $q->where('category', $request->category))
             ->when($request->filled('location'), fn($q) => $q->where('location', 'like', "%{$request->location}%"))
@@ -28,7 +33,7 @@ class MatchController extends Controller
         $appliedUmkmIds = EventApplication::where('event_id', $event->id)
             ->pluck('status', 'umkm_id');
 
-        $matches = $umkms->map(function ($umkm) use ($event, $appliedUmkmIds) {
+        $matches = $umkms->map(function ($umkm) use ($event, $appliedUmkmIds, $aiReasons) {
             $result = $this->matchService->score($event, $umkm);
 
             return [
@@ -44,11 +49,11 @@ class MatchController extends Controller
                 'target_audience'  => $umkm->target_audience,
                 'match_score'      => $result['score'],
                 'match_reason'     => $result['reasons'],
+                'match_reason_ai'  => $aiReasons[$umkm->id] ?? null,
                 'application_status' => $appliedUmkmIds[$umkm->id] ?? null,
             ];
         })->sortByDesc('match_score')->values();
 
-        // optional filters without breaking existing frontend
         if ($request->filled('min_score')) {
             $matches = $matches->filter(fn($m) => $m['match_score'] >= (int) $request->min_score)->values();
         }

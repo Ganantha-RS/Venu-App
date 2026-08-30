@@ -1,23 +1,46 @@
-import Navbar from "../../components/layout/Navbar";
 import SchoolNavbar from "../../components/layout/SchoolNavbar";
-import UmkmNavbar from "../../components/layout/UmkmNavbar";
-import { useAuth } from "../../context/useAuth";
+import SchoolHero from "../../components/school/SchoolHero";
+import SchoolCtaBanner from "../../components/school/SchoolCtaBanner";
+
+import StatsBar from "../../components/common/StatsBar";
+import AiAssistantIntro from "../../components/common/AiAssistantIntro";
+import NearbyEvents from "../../components/common/NearbyEvents";
+import AnalyticsShowcase from "../../components/common/AnalyticsShowcase";
+import Footer from "../../components/layout/Footer";
+
+import { useNearbyEvents } from "../../features/event-discovery/useNearbyEvents";
 
 export default function SchoolHome() {
-    const { user } = useAuth();
+  const { events, isLoading } = useNearbyEvents(3);
 
-    return (
-        <div className="min-h-screen bg-surface">
-            <SchoolNavbar />
-            <div className="mx-auto max-w-7xl px-4 py-12 md:px-8">
-                <h1 className="text-3xl font-extrabold text-navy">
-                    Selamat datang, {user?.name}
-                </h1>
+  return (
+    <div className="min-h-screen bg-surface">
+      <SchoolNavbar />
 
-                <p className="mt-2 text-navy/60">
-                    Ini adalah beranda untuk akun Umkm.
-                </p>
-            </div>
-        </div>
-    );
+      <main>
+        <SchoolHero />
+
+        <StatsBar />
+
+        <AiAssistantIntro
+          description="Disini aku akan membantu kamu menyinkronkan event kamu dengan UMKM yang bersedia untuk bekerjasama."
+          buttonText="Ayo sinkronkan"
+        />
+
+        <NearbyEvents events={events} isLoading={isLoading} />
+
+        <SchoolCtaBanner />
+
+        <AnalyticsShowcase
+          description="Fitur ini membantu pihak sekolah menganalisis performa event dan kolaborasi UMKM secara otomatis."
+          benefits={[
+            "Mempermudah sekolah dalam menganalisis event.",
+            "Menampilkan insight berdasarkan performa event.",
+          ]}
+        />
+      </main>
+
+      <Footer />
+    </div>
+  );
 }

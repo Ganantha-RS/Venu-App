@@ -13,14 +13,17 @@ use App\Http\Controllers\Api\Umkm\ProfileController as UmkmProfileController;
 use App\Http\Controllers\Api\School\ApplicationController as SchoolApplicationController;
 use App\Http\Controllers\Api\School\MatchController as SchoolMatchController;
 use App\Http\Controllers\Api\Umkm\MatchController as UmkmMatchController;
+use App\Http\Controllers\Api\UmkmDiscoveryController;
 
 Route::prefix('v1')->group(function () {
+    // Public
     Route::post('auth/register', [AuthController::class, 'register']);
     Route::post('auth/login', [AuthController::class, 'login']);
 
     // Public discovery — tidak butuh auth
     Route::get('events', [EventDiscoveryController::class, 'index']);
     Route::get('events/{slug}', [EventDiscoveryController::class, 'show']);
+    Route::get('umkms', [UmkmDiscoveryController::class, 'index']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('auth/logout', [AuthController::class, 'logout']);
@@ -39,7 +42,6 @@ Route::prefix('v1')->group(function () {
             Route::patch('applications/{application}/reject', [SchoolApplicationController::class, 'reject']);
 
             Route::get('events/{event}/matches', [SchoolMatchController::class, 'index']);
-
             Route::get('events/{event}/analytics', [AnalyticsController::class, 'show']);
 
             // School-initiated collaborations (invite UMKM)

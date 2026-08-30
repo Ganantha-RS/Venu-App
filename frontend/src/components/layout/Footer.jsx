@@ -58,12 +58,16 @@ function FooterLinkGroup({ title, links }) {
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-navy-dark text-white">
+    <footer className="relative overflow-hidden bg-navy-dark text-white mt-3">
       <div className="relative z-10 mx-auto grid max-w-6xl gap-10 px-4 pb-32 pt-14 md:grid-cols-4 md:px-8 md:pb-40">
         <div>
-          <p className="flex items-center gap-1 text-2xl font-extrabold">
-            <span className="text-accent">V</span>ENU
-          </p>
+          <div className="flex items-center gap-1">
+            <img src="/logo-venu.svg" alt="" className="w-8" />
+            <p className="flex items-center text-2xl font-extrabold">
+              <span className="text-accent">V</span>ENU
+            </p>
+          </div>
+
           <p className="mt-4 max-w-xs text-sm text-white/60">
             Venu adalah platform yang menghubungkan UMKM dan sekolah
             melalui event yang tepat, relevan, dan berdampak.

@@ -30,11 +30,19 @@ class MatchController extends Controller
             ->when($request->filled('max_booth_price'), fn($q) => $q->where('booth_price', '<=', $request->max_booth_price))
             ->get();
 
-        $appliedEventIds = EventApplication::where('umkm_id', $umkm->id)
-            ->pluck('status', 'event_id');
+        $applications = EventApplication::where('umkm_id', $umkm->id)
+            ->get()
+            ->keyBy('event_id');
 
-        $matches = $events->map(function ($event) use ($umkm, $appliedEventIds) {
+        // Ambil AI reasons yang sudah ada
+        $aiReasons = $applications
+            ->whereNotNull('match_reason_ai')
+            ->map(fn($app) => $app->match_reason_ai)
+            ->toArray();
+
+        $matches = $events->map(function ($event) use ($umkm, $applications) {
             $result = $this->matchService->score($event, $umkm);
+            $app = $applications[$event->id] ?? null;
 
             return [
                 'event_id'        => $event->id,
@@ -51,7 +59,8 @@ class MatchController extends Controller
                 'school_name'     => $event->school->school_name,
                 'match_score'     => $result['score'],
                 'match_reason'    => $result['reasons'],
-                'application_status' => $appliedEventIds[$event->id] ?? null,
+                'match_reason_ai' => $app?->match_reason_ai,
+                'application_status' => $app?->status,
             ];
         })->sortByDesc('match_score')->values();
 

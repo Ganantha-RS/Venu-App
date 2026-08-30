@@ -98,7 +98,7 @@ export default function AiMatchUmkm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] font-sans text-[#111827]">
+    <div className="min-h-screen font-sans text-[#111827]">
       <UmkmNavbar />
 
       <main className="relative overflow-hidden">
@@ -314,14 +314,25 @@ export default function AiMatchUmkm() {
                       </div>
 
                       <div className="mt-6 rounded-xl bg-[#F8FAFD] p-4">
-                        <p className="text-xs font-bold text-[#0B294D]">Kenapa cocok?</p>
-                        <ul className="mt-2 space-y-1.5">
-                          {(selected.match_reason && selected.match_reason.length > 0 ? selected.match_reason : ["Belum ada kecocokan spesifik."]).map((r) => (
-                            <li key={r} className="flex items-center gap-2 text-sm text-[#334155]">
-                              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#FFF4E5] text-xs text-[#F59E0B]">✓</span> {r}
-                            </li>
-                          ))}
-                        </ul>
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-xs font-bold text-[#0B294D]">Kenapa Cocok?</p>
+                          {selected.match_reason_ai && (
+                            <span className="flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-[#1677C8]">
+                              <span>✨</span> AI Analysis
+                            </span>
+                          )}
+                        </div>
+                        {selected.match_reason_ai ? (
+                          <p className="text-sm text-[#334155] leading-relaxed">{selected.match_reason_ai}</p>
+                        ) : (
+                          <ul className="mt-2 space-y-1.5">
+                            {(selected.match_reason && selected.match_reason.length > 0 ? selected.match_reason : ["Belum ada kecocokan spesifik."]).map((r) => (
+                              <li key={r} className="flex items-center gap-2 text-sm text-[#334155]">
+                                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#FFF4E5] text-xs text-[#F59E0B]">✓</span> {r}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                       </div>
 
                       <h3 className="mt-6 text-sm font-bold text-[#0B294D]">Dokumen Pendukung</h3>

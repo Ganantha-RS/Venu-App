@@ -6,6 +6,7 @@ import ProfileEditForm from "../../components/common/profile/ProfileEditForm";
 import { FiEdit2, FiShield, FiMail, FiPhone, FiMapPin, FiDollarSign, FiTarget, FiUser, FiCheckCircle, FiTag, FiPackage, FiLoader } from "react-icons/fi";
 import { LuStore, LuWallet, LuUsers } from "react-icons/lu";
 import { getUmkmProfile, updateUmkmProfile } from "../../features/profile/umkmProfileApi";
+import { useUmkmApplications } from "../../features/umkm/useUmkmApplications";
 
 const UMKM_FIELDS = [
   { key: "business_name", label: "Nama Bisnis", icon: LuStore, required: true },
@@ -21,11 +22,17 @@ const UMKM_FIELDS = [
 
 export default function UmkmProfile() {
   const { user } = useAuth();
+  const { applications } = useUmkmApplications();
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Stats dari applications
+  const totalApplications = applications.length;
+  const acceptedApplications = applications.filter(a => a.status === "approved").length;
+  const attendedEvents = new Set(applications.filter(a => a.status === "approved").map(a => a.event_id)).size;
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -166,9 +173,9 @@ export default function UmkmProfile() {
         {!isEditing && (
           <>
             <section className="mb-8 grid grid-cols-3 gap-3">
-              <ProfileStat label="Total Lamaran" value="—" accent="#1677C8" />
-              <ProfileStat label="Diterima" value="—" accent="#16A34A" />
-              <ProfileStat label="Event Diikuti" value="—" accent="#7C3AED" />
+              <ProfileStat label="Total Lamaran" value={totalApplications} accent="#1677C8" />
+              <ProfileStat label="Diterima" value={acceptedApplications} accent="#16A34A" />
+              <ProfileStat label="Event Diikuti" value={attendedEvents} accent="#7C3AED" />
             </section>
 
             <ProfileCard
