@@ -98,7 +98,7 @@ function DonutChart({ data, size = 180 }) {
           className="fill-[#0B2340]"
           style={{ fontSize: size * 0.16, fontWeight: 800, fontFamily: "inherit" }}
         >
-          {total}
+          {allValues}
         </text>
         <text
           x={cx}

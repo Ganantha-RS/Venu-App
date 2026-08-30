@@ -7,6 +7,7 @@ import { useAvailableUmkms } from "../../features/umkm/useAvailableUmkms";
 import UmkmCtaBanner from "../../components/umkm/UmkmCtaBanner";
 import AnalyticsShowcase from "../../components/common/AnalyticsShowcase";
 import Footer from "../../components/layout/Footer";
+import NearbyEvents from "../../components/common/NearbyEvents";
 
 export default function UmkmHome() {
     const { umkms, isLoading } = useAvailableUmkms(3);
@@ -22,7 +23,7 @@ export default function UmkmHome() {
                     buttonText="Ayo sinkronkan"
                 />
                 <UmkmCtaBanner />
-                <AvailableUmkm umkms={umkms} isLoading={isLoading} />
+                <NearbyEvents />
                 
                 <Footer />
             </main>

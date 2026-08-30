@@ -3,6 +3,7 @@ import {
     ChartNoAxesCombined,
     ChevronRight,
 } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AnalyticsShowcase({
     image = "/analitik_img.png",
@@ -10,15 +11,9 @@ export default function AnalyticsShowcase({
     benefits = [],
     onClick,
 }) {
+    const navigate = useNavigate();
     const handleAnalisisClick = () => {
-        if (onClick) {
-            onClick();
-            return;
-        }
-        // TODO: arahkan ke halaman analisis UMKM setelah route tersedia.
-        // Untuk sementara tampilkan notifikasi agar perilaku tombol terlihat jelas.
-        window.alert("Halaman analisis UMKM akan segera hadir.");
-        // navigate("/umkm/analytics");
+        navigate("/school/events");
     };
     return (
         <section className="bg-surface px-4 py-16 md:px-8 md:py-20">
@@ -74,9 +69,9 @@ export default function AnalyticsShowcase({
                         ))}
                     </ul>
 
-                    <button
-                        type="button"
+                    <button 
                         onClick={handleAnalisisClick}
+                        type="button"
                         className="mt-7 inline-flex items-center gap-3 rounded-full bg-navy px-7 py-2.5 text-xs font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-navy-light hover:shadow-md active:translate-y-0"
                     >
                         Analisis

@@ -1,8 +1,14 @@
 import { ChevronRight } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function SchoolCtaBanner({
     onClick,
 }) {
+
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate("/school/ai-match");
+    };
     return (
         <section className="relative overflow-hidden ">
             {/* Background */}
@@ -33,9 +39,11 @@ export default function SchoolCtaBanner({
 
                     {/* Button */}
                     <button
+                        as={Link}
                         type="button"
-                        onClick={onClick}
-                        className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-2 text-sm font-extrabold text-white shadow-sm transition-all duration-200 hover:brightness-105 hover:shadow-md active:translate-y-0 md:text-base"
+                        to="/school/ai-match"
+                        onClick={handleClick}
+                        className="mt-6 cursor-pointer inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-2 text-sm font-extrabold text-white shadow-sm transition-all duration-200 hover:brightness-105 hover:shadow-md active:translate-y-0 md:text-base"
                     >
                         Cari UMKM
                         <ChevronRight

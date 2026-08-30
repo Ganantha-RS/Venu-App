@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "./Button";
 
 export default function AiAssistantIntro({
@@ -6,6 +6,10 @@ export default function AiAssistantIntro({
     buttonText = "Ayo sinkronkan",
     onClick,
 }) {
+    const navigate = useNavigate();
+    const handleClick = () => {
+        navigate("/umkm/ai-match");
+    };
     return (
         <section className="relative overflow-hidden bg-white py-8 md:py-25">
             <div
@@ -29,10 +33,8 @@ export default function AiAssistantIntro({
 
                     <div className="mt-8">
                         <Button
-                            as={Link}
                             type="button"
-                            to="/umkm/ai-match"
-                            onClick={onClick}
+                            onClick={handleClick}
                             variant="primary"
                             className="rounded-full px-5 py-2 font-bold sm:px-8"
                         >

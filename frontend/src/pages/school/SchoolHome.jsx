@@ -9,9 +9,11 @@ import AnalyticsShowcase from "../../components/common/AnalyticsShowcase";
 import Footer from "../../components/layout/Footer";
 
 import { useNearbyEvents } from "../../features/event-discovery/useNearbyEvents";
+import { useAvailableUmkms } from "../../features/umkm/useAvailableUmkms";
+import AvailableUmkm from "../../components/umkm/AvailableUmkm";
 
 export default function SchoolHome() {
-  const { events, isLoading } = useNearbyEvents(3);
+  const { umkms, isLoading } = useAvailableUmkms(3);
 
   return (
     <div className="min-h-screen bg-surface">
@@ -27,7 +29,7 @@ export default function SchoolHome() {
           buttonText="Ayo sinkronkan"
         />
 
-        <NearbyEvents events={events} isLoading={isLoading} />
+        <AvailableUmkm umkms={umkms} isLoading={isLoading} />
 
         <SchoolCtaBanner />
 

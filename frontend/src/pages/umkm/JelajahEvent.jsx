@@ -373,9 +373,6 @@ export default function JelajahEvent() {
                               <p className="mt-0.5 text-[15px] font-extrabold leading-none text-[#0B2340]">{fmtRp(ev.booth_price)}</p>
                               <p className="text-[11px] text-[#94A3B8]">per booth · negosiasi tersedia</p>
                             </div>
-                            <button type="button" onClick={() => openModal(ev)} className="shrink-0 rounded-full bg-[#FF8A00] px-5 py-2.5 text-xs font-bold text-white shadow-[0_6px_16px_rgba(255,138,0,0.25)] transition hover:bg-[#E67700] active:scale-[0.98]">
-                              Daftar
-                            </button>
                           </div>
                         </div>
                         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[3px] translate-y-full bg-[#1677C8] transition group-hover:translate-y-0" />

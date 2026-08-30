@@ -335,13 +335,6 @@ export default function AiMatchUmkm() {
                         )}
                       </div>
 
-                      <h3 className="mt-6 text-sm font-bold text-[#0B294D]">Dokumen Pendukung</h3>
-                      <p className="text-xs text-[#94A3B8]">Upload proposal atau dokumen pendukung lainnya (PDF, DOC, Maks 10MB) — opsional untuk MVP.</p>
-                      <div className="mt-2 flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#E2E8F0] bg-[#F8FAFD] px-6 py-8 text-center">
-                        <span className="text-2xl text-[#94A3B8]">⤴</span>
-                        <p className="mt-1 text-sm text-[#64748B]">Klik untuk upload atau seret file ke sini.</p>
-                      </div>
-
                       <div className="mt-6 flex flex-col gap-3 border-t border-[#EEF2F7] pt-4 md:flex-row md:items-center md:justify-between">
                         <div>
                           <p className="text-xs text-[#64748B]">Total Biaya:</p>
