@@ -1,5 +1,6 @@
 import Navbar from "../../components/layout/Navbar";
 import SchoolNavbar from "../../components/layout/SchoolNavbar";
+import UmkmNavbar from "../../components/layout/UmkmNavbar";
 import { useAuth } from "../../context/useAuth";
 
 export default function SchoolHome() {
@@ -14,7 +15,7 @@ export default function SchoolHome() {
                 </h1>
 
                 <p className="mt-2 text-navy/60">
-                    Ini adalah beranda untuk akun Sekolah.
+                    Ini adalah beranda untuk akun Umkm.
                 </p>
             </div>
         </div>

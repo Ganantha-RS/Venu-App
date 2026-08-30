@@ -127,8 +127,8 @@ class CollaborationController extends Controller
     {
         $this->authorizeCollaboration($request->user(), $application);
 
-        if (!in_array($application->status, ['pending', 'reviewing'], true)) {
-            return $this->error('Hanya kolaborasi pending/reviewing yang bisa dinegosiasi.', [], 409);
+        if (!in_array($application->status, ['pending', 'reviewing', 'negotiating'], true)) {
+            return $this->error('Hanya kolaborasi pending/reviewing/negotiating yang bisa dinegosiasi.', [], 409);
         }
 
         $validated = $request->validate([

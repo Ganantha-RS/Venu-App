@@ -39,6 +39,7 @@ export default function AppRouter() {
             </Route>
 
       <Route element={<ProtectedRoute allowedRole="umkm" />}>
+        <Route path="/umkm" element={<UmkmHome />} />
         <Route path="/umkm/events" element={<JelajahEvent />} />
         <Route path="/umkm/applications" element={<LamaranSaya />} />
         <Route path="/umkm/ai-match" element={<UmkmAiMatchIntro />} />
