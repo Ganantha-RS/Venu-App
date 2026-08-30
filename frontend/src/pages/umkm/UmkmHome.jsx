@@ -4,6 +4,9 @@ import StatsBar from "../../components/common/StatsBar";
 import AiAssistantIntro from "../../components/common/AiAssistantIntro";
 import AvailableUmkm from "../../components/umkm/AvailableUmkm";
 import { useAvailableUmkms } from "../../features/umkm/useAvailableUmkms";
+import UmkmCtaBanner from "../../components/umkm/UmkmCtaBanner";
+import AnalyticsShowcase from "../../components/common/AnalyticsShowcase";
+import Footer from "../../components/layout/Footer";
 
 export default function UmkmHome() {
     const { umkms, isLoading } = useAvailableUmkms(3);
@@ -14,18 +17,25 @@ export default function UmkmHome() {
 
             <main>
                 <UmkmHero />
-
                 <StatsBar />
-
                 <AiAssistantIntro
                     description="Disini aku akan membantu kamu menyinkronkan usaha kamu dengan event yang sedang berlangsung."
                     buttonText="Ayo sinkronkan"
                 />
-
                 <AvailableUmkm
                     umkms={umkms}
                     isLoading={isLoading}
                 />
+                <UmkmCtaBanner />
+                <AnalyticsShowcase
+                    description="Fitur ini merupakan fitur unggulan kami. Anda dapat gunakan untuk mempermudah menganalisis usaha Anda pada saat event."
+                    benefits={[
+                        "Mempermudah Anda dalam menganalisis.",
+                        "Akurasi analisis sesuai event berlangsung.",
+                        "Penggunaan AI yang dapat dipertanggungjawabkan.",
+                    ]}
+                />
+                <Footer />
             </main>
         </div>
     );
