@@ -22,7 +22,7 @@ export default function AiAssistantIntro({ onSyncClick }) {
           </div>
           {/* Ganti dengan ilustrasi maskot VEN dari tim desainer */}
           <img
-            src="/landing_bot.png"
+            src="/assets/mascot-ven.png"
             alt="Maskot AI VEN"
             className="mt-16 w-64 md:w-80"
           />

@@ -5,7 +5,7 @@ import AiAssistantIntro from "../../components/common/AiAssistantIntro";
 import AvailableUmkm from "../../components/umkm/AvailableUmkm";
 import { useAvailableUmkms } from "../../features/umkm/useAvailableUmkms";
 import UmkmCtaBanner from "../../components/umkm/UmkmCtaBanner";
-import AnalyticsShowcase from "../../components/umkm/AnalyticsShowcase";
+import AnalyticsShowcase from "../../components/common/AnalyticsShowcase";
 import Footer from "../../components/layout/Footer";
 
 export default function UmkmHome() {
@@ -27,7 +27,14 @@ export default function UmkmHome() {
                     isLoading={isLoading}
                 />
                 <UmkmCtaBanner />
-                <AnalyticsShowcase />
+                <AnalyticsShowcase
+                    description="Fitur ini merupakan fitur unggulan kami. Anda dapat gunakan untuk mempermudah menganalisis usaha Anda pada saat event."
+                    benefits={[
+                        "Mempermudah Anda dalam menganalisis.",
+                        "Akurasi analisis sesuai event berlangsung.",
+                        "Penggunaan AI yang dapat dipertanggungjawabkan.",
+                    ]}
+                />
                 <Footer />
             </main>
         </div>

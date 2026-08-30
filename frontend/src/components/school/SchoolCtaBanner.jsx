@@ -1,6 +1,6 @@
 import { ChevronRight } from "lucide-react";
 
-export default function UmkmCtaBanner({
+export default function SchoolCtaBanner({
     onClick,
 }) {
     return (
@@ -22,13 +22,13 @@ export default function UmkmCtaBanner({
             />
 
             {/* Content */}
-            <div className="relative z-10 mx-auto flex min-h-[140px] md:min-h-[200px] max-w-7xl items-center justify-center px-6 py-10 md:min-h-[190px] md:px-8">
+            <div className="relative z-10 mx-auto flex min-h-[140px] max-w-7xl items-center justify-center px-6 py-10 md:min-h-[200px] md:px-8">
                 <div className="flex flex-col items-center text-center">
                     {/* Heading */}
                     <h2 className="max-w-4xl text-lg font-semibold leading-tight text-white md:text-3xl lg:text-[30px]">
-                        Jelajahi lebih banyak event yang sedang berlangsung.
+                        Temukan UMKM yang sesuai untuk eventmu.
                         <br />
-                        Daftarkan usahamu.
+                        Bangun kolaborasi bersama.
                     </h2>
 
                     {/* Button */}
@@ -37,8 +37,11 @@ export default function UmkmCtaBanner({
                         onClick={onClick}
                         className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-6 py-2 text-sm font-extrabold text-white shadow-sm transition-all duration-200 hover:brightness-105 hover:shadow-md active:translate-y-0 md:text-base"
                     >
-                        Cari event
-                        <ChevronRight size={19} strokeWidth={2.5} />
+                        Cari UMKM
+                        <ChevronRight
+                            size={19}
+                            strokeWidth={2.5}
+                        />
                     </button>
                 </div>
             </div>

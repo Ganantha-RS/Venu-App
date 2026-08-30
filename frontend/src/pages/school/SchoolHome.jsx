@@ -1,7 +1,13 @@
 import SchoolNavbar from "../../components/layout/SchoolNavbar";
+import SchoolHero from "../../components/school/SchoolHero";
+import SchoolCtaBanner from "../../components/school/SchoolCtaBanner";
+
 import StatsBar from "../../components/common/StatsBar";
 import AiAssistantIntro from "../../components/common/AiAssistantIntro";
 import NearbyEvents from "../../components/common/NearbyEvents";
+import AnalyticsShowcase from "../../components/common/AnalyticsShowcase";
+import Footer from "../../components/layout/Footer";
+
 import { useNearbyEvents } from "../../features/event-discovery/useNearbyEvents";
 
 export default function SchoolHome() {
@@ -12,7 +18,8 @@ export default function SchoolHome() {
       <SchoolNavbar />
 
       <main>
-        {/* Hero nanti */}
+        <SchoolHero />
+
         <StatsBar />
 
         <AiAssistantIntro
@@ -24,7 +31,20 @@ export default function SchoolHome() {
           events={events}
           isLoading={isLoading}
         />
+
+        <SchoolCtaBanner />
+
+        <AnalyticsShowcase
+          description="Fitur ini membantu pihak sekolah menganalisis performa event dan kolaborasi UMKM secara otomatis."
+          benefits={[
+            "Mempermudah sekolah dalam menganalisis event.",
+            "Menampilkan insight berdasarkan performa event.",
+            "Analisis berbasis AI yang dapat dipertanggungjawabkan.",
+          ]}
+        />
       </main>
+
+      <Footer />
     </div>
   );
 }
