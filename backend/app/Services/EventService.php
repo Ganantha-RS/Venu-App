@@ -12,16 +12,34 @@ class EventService
         $data['slug'] = $this->generateUniqueSlug($data['name']);
         $data['status'] = 'draft';
 
+        if (!empty($data['categories'])) {
+            $data['category'] = $data['categories'][0];
+        } elseif (!empty($data['category'])) {
+            $data['categories'] = [$data['category']];
+        }
+
         return $school->events()->create($data);
     }
 
     public function update(Event $event, array $data): Event
     {
-        if ($data['name'] !== $event->name) {
-            $data['slug'] = $this->generateUniqueSlug($data['name']);
+        if (
+            isset($data['name']) &&
+            $data['name'] !== $event->name
+        ) {
+            $data['slug'] = $this->generateUniqueSlug(
+                $data['name']
+            );
+        }
+
+        if (!empty($data['categories'])) {
+            $data['category'] = $data['categories'][0];
+        } elseif (!empty($data['category'])) {
+            $data['categories'] = [$data['category']];
         }
 
         $event->update($data);
+
         return $event->fresh();
     }
 

@@ -1,25 +1,29 @@
 <?php
 
-// app/Http/Controllers/Api/School/MatchController.php
-// app/Http/Controllers/Api/School/MatchController.php
 namespace App\Http\Controllers\Api\School;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\ApiResponse;
-use App\Models\{Event, EventApplication, UmkmProfile};
-use App\Services\EventMatchService;
+use App\Models\Event;
+use App\Models\EventApplication;
+use App\Models\UmkmProfile;
+use App\Services\AiMatchService;
+use Illuminate\Http\Request;
 
 class MatchController extends Controller
 {
     use ApiResponse;
 
-    public function __construct(private EventMatchService $matchService) {}
+    public function __construct(private AiMatchService $matchService) {}
 
-    public function index(Event $event)
+    public function index(Request $request, Event $event)
     {
         $this->authorize('manageApplications', $event);
 
-        $umkms = UmkmProfile::all();
+        $umkms = UmkmProfile::query()
+            ->when($request->filled('category'), fn($q) => $q->where('category', $request->category))
+            ->when($request->filled('location'), fn($q) => $q->where('location', 'like', "%{$request->location}%"))
+            ->get();
 
         $appliedUmkmIds = EventApplication::where('event_id', $event->id)
             ->pluck('status', 'umkm_id');
@@ -28,19 +32,30 @@ class MatchController extends Controller
             $result = $this->matchService->score($event, $umkm);
 
             return [
-                'umkm_id' => $umkm->id,
-                'business_name' => $umkm->business_name,
-                'description' => $umkm->description,
-                'category' => $umkm->category,
-                'location' => $umkm->location,
-                'price_min' => $umkm->price_min,
-                'price_max' => $umkm->price_max,
-                'target_audience' => $umkm->target_audience,
-                'match_score' => $result['score'],
-                'match_reason' => $result['reasons'],
+                'umkm_id'          => $umkm->id,
+                'business_name'    => $umkm->business_name,
+                'description'      => $umkm->description,
+                'category'         => $umkm->category,
+                'location'         => $umkm->location,
+                'logo'             => $umkm->logo,
+                'price_min'        => $umkm->price_min,
+                'price_max'        => $umkm->price_max,
+                'booth_budget_max' => $umkm->booth_budget_max,
+                'target_audience'  => $umkm->target_audience,
+                'match_score'      => $result['score'],
+                'match_reason'     => $result['reasons'],
                 'application_status' => $appliedUmkmIds[$umkm->id] ?? null,
             ];
         })->sortByDesc('match_score')->values();
+
+        // optional filters without breaking existing frontend
+        if ($request->filled('min_score')) {
+            $matches = $matches->filter(fn($m) => $m['match_score'] >= (int) $request->min_score)->values();
+        }
+
+        if ($request->filled('limit')) {
+            $matches = $matches->take(min((int) $request->limit, 100))->values();
+        }
 
         return $this->success('Rekomendasi UMKM untuk event ini.', $matches);
     }

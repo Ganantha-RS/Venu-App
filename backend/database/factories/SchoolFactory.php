@@ -20,7 +20,13 @@ class SchoolFactory extends Factory
         return [
             'user_id' => User::factory()->state(['role' => 'school']),
             'school_name' => fake()->randomElement($names),
-            'description' => fake()->sentence(12),
+            'npsn' => fake()->numerify('########'),
+            'position' => fake()->randomElement(['Kepala Sekolah', 'Wakasek Kesiswaan', 'Pembina OSIS']),
+            'description' => fake()->randomElement([
+                'Sekolah menengah kejuruan dengan program kewirausahaan aktif.',
+                'Rutin mengadakan event tahunan untuk mendukung UMKM lokal.',
+                'Berfokus pada pengembangan bakat siswa di bidang bisnis dan kreativitas.',
+            ]),
             'address' => fake()->address(),
             'phone' => fake()->numerify('08##########'),
         ];

@@ -89,7 +89,7 @@ class AuthController extends Controller
 
         $result = DB::transaction(function () use ($validated) {
 
-           
+
             $user = User::create([
                 'name' => $validated['role'] === 'school'
                     ? $validated['school_name']
@@ -200,7 +200,7 @@ class AuthController extends Controller
     }
 
 
-        public function me(Request $request): JsonResponse
+    public function me(Request $request): JsonResponse
     {
         $user = $request->user();
 
@@ -212,8 +212,10 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Data user berhasil diambil.',
-            'data' => $user,
+            'message' => 'Data user.',
+            'data' => [
+                'user' => $user,
+            ],
         ]);
     }
 }

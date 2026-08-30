@@ -2,6 +2,7 @@
 
 // routes/api.php
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\CollaborationController;
 use App\Http\Controllers\Api\EventDiscoveryController;
 use App\Http\Controllers\Api\School\AnalyticsController;
 use App\Http\Controllers\Api\School\EventController;
@@ -17,12 +18,13 @@ Route::prefix('v1')->group(function () {
     Route::post('auth/register', [AuthController::class, 'register']);
     Route::post('auth/login', [AuthController::class, 'login']);
 
+    // Public discovery — tidak butuh auth
+    Route::get('events', [EventDiscoveryController::class, 'index']);
+    Route::get('events/{slug}', [EventDiscoveryController::class, 'show']);
+
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('auth/logout', [AuthController::class, 'logout']);
         Route::get('auth/me', [AuthController::class, 'me']);
-
-        Route::get('events', [EventDiscoveryController::class, 'index']);
-        Route::get('events/{slug}', [EventDiscoveryController::class, 'show']);
 
         Route::middleware('role:school')->prefix('school')->group(function () {
             Route::get('profile', [SchoolProfileController::class, 'show']);
@@ -39,6 +41,9 @@ Route::prefix('v1')->group(function () {
             Route::get('events/{event}/matches', [SchoolMatchController::class, 'index']);
 
             Route::get('events/{event}/analytics', [AnalyticsController::class, 'show']);
+
+            // School-initiated collaborations (invite UMKM)
+            Route::post('collaborations', [CollaborationController::class, 'storeSchool']);
         });
 
         Route::middleware('role:umkm')->prefix('umkm')->group(function () {
@@ -54,5 +59,14 @@ Route::prefix('v1')->group(function () {
         Route::middleware('role:umkm')->group(function () {
             Route::post('events/{event}/applications', [ApplicationController::class, 'store']);
         });
+
+        // Collaboration — both roles, auth check di controller
+        Route::get('collaborations', [CollaborationController::class, 'index']);
+        Route::get('collaborations/{application}', [CollaborationController::class, 'show']);
+        Route::patch('collaborations/{application}', [CollaborationController::class, 'update']);
+        Route::post('collaborations/{application}/accept', [CollaborationController::class, 'accept']);
+        Route::post('collaborations/{application}/reject', [CollaborationController::class, 'reject']);
+        Route::post('collaborations/{application}/negotiate', [CollaborationController::class, 'negotiate']);
+        Route::post('collaborations/{application}/cancel', [CollaborationController::class, 'cancel']);
     });
 });

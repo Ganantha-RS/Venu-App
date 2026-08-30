@@ -12,7 +12,7 @@ class ApplicationService
 
     public function __construct(private EventMatchService $matchService) {}
 
-    public function apply(UmkmProfile $umkm, int $eventId): EventApplication
+    public function apply(UmkmProfile $umkm, int $eventId, ?string $message = null, ?int $proposedPrice = null): EventApplication
     {
         $event = Event::findOrFail($eventId);
 
@@ -41,16 +41,19 @@ class ApplicationService
         return EventApplication::create([
             'event_id' => $event->id,
             'umkm_id' => $umkm->id,
+            'initiated_by' => 'umkm',
             'status' => 'pending',
             'match_score' => $matchResult['score'],
             'match_reason' => $matchResult['reasons'],
+            'message' => $message,
+            'proposed_price' => $proposedPrice,
             'applied_at' => now(),
         ]);
     }
 
     public function approve(EventApplication $application): EventApplication
 {
-    if ($application->status !== 'pending') {
+    if (!in_array($application->status, ['pending', 'reviewing', 'negotiating'], true)) {
         throw new ApplicationRuleException('Aplikasi ini sudah direview sebelumnya.');
     }
 
@@ -84,7 +87,7 @@ class ApplicationService
 
 public function reject(EventApplication $application): EventApplication
 {
-    if ($application->status !== 'pending') {
+    if (!in_array($application->status, ['pending', 'reviewing', 'negotiating'], true)) {
         throw new ApplicationRuleException('Aplikasi ini sudah direview sebelumnya.');
     }
 

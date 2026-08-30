@@ -1,19 +1,38 @@
-export default function MatchListItem({ title, subtitle, score, isActive, onClick }) {
+import MatchScoreBadge from "./MatchScoreBadge";
+
+export default function MatchListItem({
+  title,
+  subtitle,
+  score,
+  isActive,
+  onClick,
+}) {
   return (
     <button
+      type="button"
       onClick={onClick}
-      className={`w-full rounded-xl2 border p-4 text-left transition ${
-        isActive ? "border-accent bg-accent/5" : "border-navy/10 bg-white hover:border-navy/30"
+      className={`w-full rounded-xl border p-5 text-left transition ${
+        isActive
+          ? "border-[#FFB54A] bg-[#FFFAF3]"
+          : "border-[#D8E2EB] bg-white hover:border-[#B9C9D8]"
       }`}
     >
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <h3 className="font-bold text-navy">{title}</h3>
-          <p className="mt-1 text-sm text-navy/50">{subtitle}</p>
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <h3 className="truncate text-[17px] font-bold text-[#062B52]">
+            {title}
+          </h3>
+
+          <p className="mt-1 text-sm text-[#94A3B8]">
+            {subtitle}
+          </p>
         </div>
-        <span className="shrink-0 rounded-full bg-accent/15 px-2.5 py-1 text-xs font-bold text-accent-dark">
-          {score}%
-        </span>
+
+        <div>
+          
+        </div>
+
+        <MatchScoreBadge score={score} />
       </div>
     </button>
   );

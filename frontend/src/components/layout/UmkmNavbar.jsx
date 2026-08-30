@@ -4,9 +4,9 @@ import { useAuth } from "../../context/useAuth";
 
 const NAV_ITEMS = [
     { label: "Beranda", to: "/umkm" },
-    { label: "Cari Event", to: "/events" },
-    { label: "Lamaran Saya", to: "/umkm/applications" },
+    { label: "Jelajah Event", to: "/umkm/events" },
     { label: "AI Match", to: "/umkm/ai-match" },
+    { label: "Lamaran Saya", to: "/umkm/applications" },
     { label: "Profil", to: "/umkm/profile" },
 ];
 

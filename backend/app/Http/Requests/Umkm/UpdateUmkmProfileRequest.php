@@ -24,13 +24,21 @@ class UpdateUmkmProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'business_name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'category' => 'required|string|max:100',
-            'location' => 'required|string|max:255',
-            'price_min' => 'nullable|integer|min:0',
-            'price_max' => 'nullable|integer|min:0|gte:price_min',
-            'target_audience' => 'nullable|string|max:255',
-        ];
+    'business_name' => 'required|string|max:255',
+
+    'description' => 'nullable|string',
+
+    'category' => 'required|string|max:100',
+
+    'location' => 'required|string|max:255',
+
+    'price_min' => 'nullable|integer|min:0',
+
+    'price_max' => 'nullable|integer|min:0|gte:price_min',
+
+    'booth_budget_max' => 'nullable|integer|min:0',
+
+    'target_audience' => 'nullable|string|max:255',
+];
     }
 }

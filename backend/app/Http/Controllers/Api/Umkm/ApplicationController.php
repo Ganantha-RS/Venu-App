@@ -38,12 +38,18 @@ class ApplicationController extends Controller
     }
 
     // sesudah
-    public function store(Event $event)
+    public function store(Event $event, \Illuminate\Http\Request $request)
     {
+        $request->validate([
+            'message' => 'nullable|string|max:2000',
+            'proposed_price' => 'nullable|integer|min:0',
+        ]);
         try {
             $application = $this->applicationService->apply(
                 auth()->user()->umkmProfile,
-                $event->id
+                $event->id,
+                $request->input('message'),
+                $request->input('proposed_price') !== null ? (int) $request->input('proposed_price') : null
             );
         } catch (ApplicationRuleException $e) {
             return $this->error($e->getMessage(), [], 409);

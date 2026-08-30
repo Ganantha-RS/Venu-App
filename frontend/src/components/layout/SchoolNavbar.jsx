@@ -1,10 +1,11 @@
-import { Bell, LogOut } from "lucide-react";
+import { Bell, LogOut, Inbox } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/useAuth";
 
 const NAV_ITEMS = [
     { label: "Beranda", to: "/school" },
     { label: "Event Saya", to: "/school/events" },
+    { label: "Lamaran Masuk", to: "/school/applications"},
     { label: "AI Match", to: "/school/ai-match" },
     { label: "Profil", to: "/school/profile" },
 ];
@@ -36,8 +37,8 @@ export default function SchoolNavbar() {
                                 end={item.to === "/school"}
                                 className={({ isActive }) =>
                                     isActive
-                                        ? "border-b-2 border-accent pb-1 text-accent"
-                                        : "pb-1 hover:text-navy"
+                                        ? "inline-flex items-center gap-1.5 border-b-2 border-accent pb-1 text-accent"
+                                        : "inline-flex items-center gap-1.5 pb-1 hover:text-navy"
                                 }
                             >
                                 {item.label}
