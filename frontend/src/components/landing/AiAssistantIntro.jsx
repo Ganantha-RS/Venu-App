@@ -20,7 +20,7 @@ export default function AiAssistantIntro({ onSyncClick }) {
           <div className="absolute -top-2 left-1/2 w-56 -translate-x-1/4 rounded-xl bg-white p-3 text-sm text-navy/80 shadow-md md:left-8 md:translate-x-0">
             Aku akan membantu kamu mencari event yang cocok
           </div>
-          {/* Ganti dengan ilustrasi maskot VEN dari tim desainer */}
+
           <img
             src="/assets/mascot-ven.png"
             alt="Maskot AI VEN"

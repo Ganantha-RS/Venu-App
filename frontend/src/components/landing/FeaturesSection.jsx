@@ -25,7 +25,7 @@ const FEATURES = [
 export default function FeaturesSection() {
     return (
         <section className="mx-auto max-w-6xl px-4 py-20 md:px-8">
-            {/* Label kecil "<VENU>" */}
+
             <p className="text-sm font-bold tracking-wide text-navy">
                 <span className="text-accent">{"<"}</span>
                 VENU

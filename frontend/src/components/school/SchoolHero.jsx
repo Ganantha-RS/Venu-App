@@ -63,7 +63,7 @@ export default function SchoolHero() {
                         Siap berkembang bareng{" "}
                         <span className="text-accent">VENU</span>
                         <br className="hidden sm:block" />
-                        <span className="text-accent">Peluang</span>{" "}
+                        <span className="text-accent"> Peluang</span>{" "}
                         baru menunggumu!
                     </h1>
 
@@ -72,10 +72,10 @@ export default function SchoolHero() {
                             as={Link}
                             to="/school/events"
                             variant="accent"
-                            className="rounded-full px-5 py-2 text-sm font-semibold shadow-lg shadow-black/30 md:text-base"
+                            className="rounded-full px-5 py-2 text-base text-white font-semibold md:text-lg group"
                         >
                             Temukan Event
-                            <ChevronRight size={16} />
+                            <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
                         </Button>
                     </div>
                 </div>

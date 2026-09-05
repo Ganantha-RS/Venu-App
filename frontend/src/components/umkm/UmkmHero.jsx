@@ -10,7 +10,7 @@ export default function UmkmHero() {
 
     return (
         <section className="relative isolate overflow-hidden bg-navy">
-            
+
             <div className="relative z-10 block h-[240px] w-full overflow-hidden rounded-b-[28px] md:hidden">
                 <img
                     src="/imgUmkmHero.png"
@@ -19,7 +19,7 @@ export default function UmkmHero() {
                 />
             </div>
 
-            
+
             <div
                 aria-hidden="true"
                 className="absolute inset-y-0 right-0 z-0 hidden w-[62%] overflow-hidden md:block"
@@ -34,7 +34,7 @@ export default function UmkmHero() {
                 />
             </div>
 
-            
+
             <svg
                 aria-hidden="true"
                 viewBox="0 0 1000 120"
@@ -44,7 +44,7 @@ export default function UmkmHero() {
                 <path d="M0,55 C160,95 300,105 430,75 C560,42 660,15 800,45 C900,65 950,85 1000,68 L1000,120 L0,120 Z" />
             </svg>
 
-           
+
             <div
                 className="
                     relative z-20 mx-auto
@@ -85,7 +85,7 @@ export default function UmkmHero() {
                         Siap berkembang bareng{" "}
                         <span className="text-accent">VENU</span>
                         <br className="hidden sm:block" />
-                        <span className="text-accent">Peluang</span> baru
+                        <span className="text-accent"> Peluang</span> baru
                         menunggumu!
                     </h1>
 
@@ -95,19 +95,10 @@ export default function UmkmHero() {
                             as={Link}
                             to="/umkm/events"
                             variant="accent"
-                            className="
-                                rounded-full
-                                px-5
-                                py-2
-                                text-sm
-                                font-semibold
-                                shadow-lg
-                                shadow-black/30
-                                md:text-base
-                            "
+                            className="rounded-full px-5 py-2 text-base text-white font-semibold md:text-lg group"
                         >
                             Temukan Event
-                            <ChevronRight size={16} />
+                            <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform " />
                         </Button>
                     </div>
                 </div>

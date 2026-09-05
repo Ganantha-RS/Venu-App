@@ -31,11 +31,7 @@ export default function SchoolNavbar() {
                     className="flex shrink-0 items-center text-xl font-extrabold tracking-tight text-navy"
                     aria-label="VENU Beranda"
                 >
-                    <img
-                        src="/logo-venu.svg"
-                        alt="Logo Venu"
-                        className="h-8"
-                    />
+                    <img src="/logo-venu.svg" alt="Logo Venu" className="h-8" />
                     <span className="ml-1">VENU</span>
                 </Link>
 
@@ -69,14 +65,12 @@ export default function SchoolNavbar() {
                         <Bell size={18} strokeWidth={1.8} />
                     </button>
 
-                        <div className="text-left leading-tight">
-                            <p className="text-xs font-semibold text-navy">
-                                {user?.name || "Pengguna"}
-                            </p>
-                            <p className="text-[9px] text-navy/45">
-                                Pihak Sekolah
-                            </p>
-                        </div>
+                    <div className="text-left leading-tight">
+                        <p className="text-xs font-semibold text-navy">
+                            {user?.name || "Pengguna"}
+                        </p>
+                        <p className="text-[9px] text-navy/45">Pihak Sekolah</p>
+                    </div>
                     <button
                         type="button"
                         onClick={handleLogout}
@@ -100,7 +94,7 @@ export default function SchoolNavbar() {
             </nav>
 
             {isMenuOpen && (
-                <div className="border-t border-navy/10 bg-white px-4 pb-4 pt-2 shadow-md md:hidden">
+                <div className="absolute left-0 right-0 top-full z-40 max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-navy/10 bg-white px-4 pb-4 pt-2 shadow-lg md:hidden">
                     <ul className="flex flex-col">
                         {NAV_ITEMS.map((item) => (
                             <li key={item.to}>
@@ -125,15 +119,11 @@ export default function SchoolNavbar() {
 
                     <div className="mt-2 flex items-center justify-between border-t border-navy/10 px-3 pt-4">
                         <div className="flex items-center gap-3">
-
-
                             <div className="leading-tight">
                                 <p className="text-sm font-semibold text-navy">
                                     {user?.name || "Pengguna"}
                                 </p>
-                                <p className="text-[10px] text-navy/45">
-                                    Pihak Sekolah
-                                </p>
+                                <p className="text-[10px] text-navy/45">Pihak Sekolah</p>
                             </div>
                         </div>
 

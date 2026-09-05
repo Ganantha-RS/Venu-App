@@ -16,11 +16,13 @@ export default function UmkmNavbar() {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     const handleLogout = async () => {
         setIsMenuOpen(false);
         await logout();
         navigate("/", { replace: true });
     };
+
     return (
         <header className="sticky top-0 z-50 bg-white shadow-sm">
             <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-8">
@@ -29,13 +31,10 @@ export default function UmkmNavbar() {
                     className="flex shrink-0 items-center text-xl font-extrabold tracking-tight text-navy"
                     aria-label="VENU Beranda"
                 >
-                    <img
-                        src="/logo-venu.svg"
-                        alt="Logo Venu"
-                        className="ml-1 w-8"
-                    />
+                    <img src="/logo-venu.svg" alt="Logo Venu" className="ml-1 w-8" />
                     <span className="ml-1">VENU</span>
                 </Link>
+
                 <ul className="hidden items-center gap-8 text-sm font-medium text-navy/80 md:flex">
                     {NAV_ITEMS.map((item) => (
                         <li key={item.to}>
@@ -56,6 +55,7 @@ export default function UmkmNavbar() {
                         </li>
                     ))}
                 </ul>
+
                 <div className="hidden items-center gap-3 md:flex">
                     <button
                         type="button"
@@ -64,17 +64,16 @@ export default function UmkmNavbar() {
                     >
                         <Bell size={18} strokeWidth={1.8} />
                     </button>
+
                     <div className="flex items-center gap-2">
-                       
                         <div className="text-left leading-tight">
                             <p className="text-xs font-semibold text-navy">
                                 {user?.name || "Pengguna"}
                             </p>
-                            <p className="text-[9px] text-navy/45">
-                                Pemilik Usaha
-                            </p>
+                            <p className="text-[9px] text-navy/45">Pemilik Usaha</p>
                         </div>
                     </div>
+
                     <button
                         type="button"
                         onClick={handleLogout}
@@ -85,6 +84,7 @@ export default function UmkmNavbar() {
                         <FiLogOut size={18} />
                     </button>
                 </div>
+
                 <button
                     type="button"
                     onClick={() => setIsMenuOpen((open) => !open)}
@@ -95,8 +95,9 @@ export default function UmkmNavbar() {
                     {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
             </nav>
+
             {isMenuOpen && (
-                <div className="border-t border-navy/10 bg-white px-4 pb-4 pt-2 shadow-md md:hidden">
+                <div className="absolute left-0 right-0 top-full z-40 max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-navy/10 bg-white px-4 pb-4 pt-2 shadow-lg md:hidden">
                     <ul className="flex flex-col">
                         {NAV_ITEMS.map((item) => (
                             <li key={item.to}>
@@ -118,17 +119,17 @@ export default function UmkmNavbar() {
                             </li>
                         ))}
                     </ul>
+
                     <div className="mt-3 flex items-center justify-between border-t border-navy/10 px-3 pt-3">
                         <div className="flex items-center gap-3">
                             <div className="leading-tight">
                                 <p className="text-sm font-semibold text-navy">
                                     {user?.name || "Pengguna"}
                                 </p>
-                                <p className="text-[10px] text-navy/45">
-                                    Pemilik Usaha
-                                </p>
+                                <p className="text-[10px] text-navy/45">Pemilik Usaha</p>
                             </div>
                         </div>
+
                         <button
                             type="button"
                             onClick={handleLogout}
