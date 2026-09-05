@@ -68,7 +68,7 @@ export default function Navbar({ user: userProp }) {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 bg-white shadow-sm md:relative">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-8">
         <button
           type="button"
@@ -172,7 +172,7 @@ export default function Navbar({ user: userProp }) {
       </nav>
 
       {isMenuOpen && (
-        <div className="border-t border-navy/10 bg-white px-4 pb-5 pt-3 shadow-md md:hidden">
+        <div className="absolute left-0 right-0 top-full z-40 border-t border-navy/10 bg-white px-4 pb-5 pt-3 shadow-lg md:hidden max-h-[calc(100vh-4rem)] overflow-y-auto">
           <ul className="flex flex-col">
             {NAV_ITEMS.map((item) => {
               const isActive =

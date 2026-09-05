@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ShieldCheck } from "lucide-react";
 import Button from "../common/Button";
 
 export default function LandingHero() {
@@ -11,22 +11,29 @@ export default function LandingHero() {
         >
           <div className="relative h-[330px] w-[300px] sm:h-[370px] sm:w-[340px] md:h-[390px] md:w-[350px] lg:h-[500px] lg:w-[450px]">
             <img
-              src="/landing_img1.png"
+              src="/umkm_img1.png"
               alt="Suasana event UMKM di sekolah"
-              className="absolute left-1/2 top-5 h-[180px] w-full -translate-x-1/2 rounded-xl object-cover shadow-lg sm:top-6 sm:h-[230px] sm:rounded-2xl md:h-[240px] lg:top-8 lg:h-[315px]"
+              className="absolute left-1/2 top-5 h-[180px] w-full -translate-x-1/2 rounded-xl border-2 md:border-4 border-navy object-cover shadow-lg sm:top-6 sm:h-[230px] sm:rounded-2xl md:h-[240px] lg:top-8 lg:h-[315px]"
             />
 
-            <div className="absolute bottom-[18px] left-[7%] h-[125px] w-[40%] overflow-hidden rounded-xl bg-white shadow-lg sm:bottom-[20px] sm:h-[140px] md:h-[125px] lg:bottom-[24px] lg:h-[165px] lg:rounded-2xl">
+            <div className="absolute left-1/2 top-2 z-10 -translate-x-[calc(50%+90px)] sm:top-3 sm:-translate-x-[calc(50%+105px)] lg:top-5 lg:-translate-x-[calc(50%+140px)]">
+              <span className="flex items-center gap-1.5 rounded-full bg-navy px-3 py-1.5 text-xs font-semibold text-white shadow-md sm:text-sm">
+                <ShieldCheck size={14} className="text-accent sm:h-4 sm:w-4" />
+                Terpercaya
+              </span>
+            </div>
+
+            <div className="absolute bottom-[18px] left-[7%] h-[125px] w-[40%] overflow-hidden rounded-xl border-2 md:border-4 border-accent bg-white shadow-lg sm:bottom-[20px] sm:h-[140px] md:h-[125px] lg:bottom-[24px] lg:h-[165px] lg:rounded-2xl">
               <img
-                src="/landing_img2.png"
+                src="/umkm_img2.png"
                 alt=""
                 className="h-full w-full object-cover"
               />
             </div>
 
-            <div className="absolute bottom-[18px] right-[7%] h-[125px] w-[40%] overflow-hidden rounded-xl bg-white shadow-lg sm:bottom-[20px] sm:h-[140px] md:h-[125px] lg:bottom-[24px] lg:h-[165px] lg:rounded-2xl">
+            <div className="absolute bottom-[18px] right-[7%] h-[125px] w-[40%] overflow-hidden rounded-xl border-2 md:border-4 border-accent bg-white shadow-lg sm:bottom-[20px] sm:h-[140px] md:h-[125px] lg:bottom-[24px] lg:h-[165px] lg:rounded-2xl">
               <img
-                src="/landing_img3.png"
+                src="/umkm_img3.png"
                 alt=""
                 className="h-full w-full object-cover"
               />
