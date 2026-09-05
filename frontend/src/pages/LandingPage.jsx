@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import Hero from "../components/landing/Hero";
 import Footer from "../components/layout/Footer";

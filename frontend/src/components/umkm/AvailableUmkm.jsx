@@ -6,47 +6,13 @@ import {
     FaCheckCircle,
 } from "react-icons/fa";
 
-export default function AvailableUmkm() {
-    const umkms = [
-        {
-            name: "Teh Poci",
-            category: "Minuman",
-            type: "Teh",
-            service: "Siap Saji",
-            rating: "4.9",
-            reviews: "350",
-            collaboration: "500+",
-            location: "Jakarta Timur",
-            image: "/img/poci.png",
-        },
-        {
-            name: "Hotway's",
-            category: "Makanan",
-            type: "Ayam",
-            service: "Cepat Saji",
-            rating: "4.9",
-            reviews: "350",
-            collaboration: "500+",
-            location: "Jakarta Timur",
-            image: "/img/hotsway.png",
-        },
-        {
-            name: "Kopi Jago",
-            category: "Minuman",
-            type: "Kopi",
-            service: "Siap Saji",
-            rating: "4.9",
-            reviews: "350",
-            collaboration: "500+",
-            location: "Jakarta Timur",
-            image: "/img/kopi.png",
-        },
-    ];
+import { Link } from "react-router-dom";
+import { UMKMS } from "../../data/umkms";
 
+export default function AvailableUmkm() {
     return (
         <section className="bg-[#F7F8FA] px-4 py-14 md:px-8 md:py-16">
             <div className="mx-auto max-w-6xl">
-
                 {/* Title */}
                 <h2 className="text-center text-3xl font-bold tracking-tight text-black md:text-4xl">
                     UMKM Tersedia
@@ -54,9 +20,9 @@ export default function AvailableUmkm() {
 
                 {/* Cards */}
                 <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    {umkms.map((umkm, index) => (
+                    {UMKMS.map((umkm) => (
                         <div
-                            key={index}
+                            key={umkm.slug}
                             className="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_2px_4px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
                         >
                             {/* Image */}
@@ -70,7 +36,6 @@ export default function AvailableUmkm() {
 
                             {/* Content */}
                             <div className="p-4">
-
                                 {/* Name */}
                                 <div className="flex items-center gap-1.5">
                                     <h3 className="text-[20px] font-bold leading-tight text-black">
@@ -83,15 +48,22 @@ export default function AvailableUmkm() {
                                 {/* Category */}
                                 <p className="mt-2 text-[14px] font-medium text-gray-700">
                                     {umkm.category}
-                                    <span className="mx-1 text-gray-400">•</span>
+
+                                    <span className="mx-1 text-gray-400">
+                                        •
+                                    </span>
+
                                     {umkm.type}
-                                    <span className="mx-1 text-gray-400">•</span>
+
+                                    <span className="mx-1 text-gray-400">
+                                        •
+                                    </span>
+
                                     {umkm.service}
                                 </p>
 
                                 {/* Rating & Collaboration */}
                                 <div className="mt-6 flex items-center">
-
                                     {/* Rating */}
                                     <div className="flex items-center gap-1.5">
                                         <FaStar className="text-[17px] text-[#FFC400]" />
@@ -135,15 +107,15 @@ export default function AvailableUmkm() {
 
                                 {/* Detail */}
                                 <div className="mt-4 flex justify-end">
-                                    <button
-                                        type="button"
+                                    <Link
+                                        to={`/school/umkm/${umkm.slug}`}
                                         className="flex items-center gap-1 text-[13px] font-bold text-black transition-colors hover:text-[#1683E8]"
                                     >
                                         Lihat Detail
-                                        <FaChevronRight className="text-[10px]" />
-                                    </button>
-                                </div>
 
+                                        <FaChevronRight className="text-[10px]" />
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     ))}

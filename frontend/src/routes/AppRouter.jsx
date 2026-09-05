@@ -18,6 +18,8 @@ import SchoolProfile from "../pages/school/SchoolProfile";
 import UmkmProfile from "../pages/umkm/UmkmProfile";
 import JelajahEvent from "../pages/umkm/JelajahEvent";
 import LamaranSaya from "../pages/umkm/LamaranSaya";
+import UmkmDetail from "../pages/school/UmkmDetail";
+import EventDetail from "../pages/umkm/EventDetail";
 
 export default function AppRouter() {
   return (
@@ -31,6 +33,7 @@ export default function AppRouter() {
       <Route element={<ProtectedRoute allowedRole="school" />}>
         <Route path="/school" element={<SchoolHome />} />
         <Route path="/school/events" element={<EventSaya />} />
+        <Route path="/school/umkm/:slug" element={<UmkmDetail />} />
         <Route path="/school/ai-match" element={<SchoolAiMatchIntro />} />
         <Route path="/school/ai-match/hasil" element={<AiMatchSchool />} />
         <Route path="/school/applications" element={<SchoolApplications />} />
@@ -43,6 +46,7 @@ export default function AppRouter() {
       <Route element={<ProtectedRoute allowedRole="umkm" />}>
         <Route path="/umkm" element={<UmkmHome />} />
         <Route path="/umkm/events" element={<JelajahEvent />} />
+        <Route path="/umkm/events/:slug" element={<EventDetail />} />
         <Route path="/umkm/applications" element={<LamaranSaya />} />
         <Route path="/umkm/ai-match" element={<UmkmAiMatchIntro />} />
         <Route path="/umkm/ai-match/hasil" element={<AiMatchUmkm />} />
