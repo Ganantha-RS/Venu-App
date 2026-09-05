@@ -3,21 +3,42 @@ import { useAuth } from "../../context/useAuth";
 import UmkmNavbar from "../../components/layout/UmkmNavbar";
 import ProfileCard from "../../components/common/profile/ProfileCard";
 import ProfileEditForm from "../../components/common/profile/ProfileEditForm";
-import { FiEdit2, FiShield, FiMail, FiPhone, FiMapPin, FiDollarSign, FiTarget, FiUser, FiCheckCircle, FiTag, FiPackage, FiLoader } from "react-icons/fi";
+import { FiEdit2, FiShield, FiMail, FiPhone, FiMapPin, FiDollarSign, FiTarget, FiUser, FiCheckCircle, FiTag, FiPackage, FiLoader, FiFileText } from "react-icons/fi";
 import { LuStore, LuWallet, LuUsers } from "react-icons/lu";
 import { getUmkmProfile, updateUmkmProfile } from "../../features/profile/umkmProfileApi";
 import { useUmkmApplications } from "../../features/umkm/useUmkmApplications";
 
+const LOCATIONS = ["Jakarta Timur", "Jakarta Selatan", "Jakarta Barat", "Jakarta Pusat", "Jakarta Utara", "Bogor", "Depok", "Tangerang", "Bekasi"];
+const TARGET_OPTIONS = [
+  { value: "", label: "— Belum dipilih" },
+  { value: "pelajar", label: "Pelajar" },
+  { value: "remaja", label: "Remaja" },
+  { value: "umum", label: "Umum" },
+  { value: "keluarga", label: "Keluarga" },
+];
+const CATEGORY_OPTIONS = [
+  { value: "Kuliner", label: "Kuliner" },
+  { value: "Fashion", label: "Fashion" },
+  { value: "Kriya/Craft", label: "Kriya/Craft" },
+  { value: "Jasa", label: "Jasa" },
+  { value: "Lainnya", label: "Lainnya" },
+  { value: "Makanan", label: "Makanan" },
+  { value: "Minuman", label: "Minuman" },
+  { value: "Kerajinan", label: "Kerajinan" },
+  { value: "Aksesoris", label: "Aksesoris" },
+];
+
 const UMKM_FIELDS = [
-  { key: "business_name", label: "Nama Bisnis", icon: LuStore, required: true },
-  { key: "category", label: "Kategori", icon: FiTag, required: true },
-  { key: "products", label: "Produk", icon: FiPackage, required: false },
-  { key: "phone", label: "No. Telepon", icon: FiPhone, required: false },
-  { key: "location", label: "Lokasi", icon: FiMapPin, required: false },
-  { key: "target_audience", label: "Target Pasar", icon: LuUsers, required: false },
-  { key: "price_min", label: "Harga Minimum (Rp)", icon: FiDollarSign, required: false },
-  { key: "price_max", label: "Harga Maksimum (Rp)", icon: FiDollarSign, required: false },
-  { key: "booth_budget_max", label: "Budget Booth (Rp)", icon: LuWallet, required: false },
+  { key: "business_name", label: "Nama Bisnis", icon: LuStore, required: true, type: "text" },
+  { key: "category", label: "Kategori", icon: FiTag, required: true, type: "select", options: CATEGORY_OPTIONS },
+  { key: "products", label: "Produk", icon: FiPackage, required: false, type: "text", placeholder: "Contoh: Kopi susu, risol mayo" },
+  { key: "phone", label: "No. Telepon", icon: FiPhone, required: false, type: "text" },
+  { key: "location", label: "Lokasi Usaha", icon: FiMapPin, required: false, type: "select", options: [{ value: "", label: "— Pilih lokasi" }, ...LOCATIONS.map((l) => ({ value: l, label: l }))], hint: "untuk AI Match" },
+  { key: "target_audience", label: "Target Pasar", icon: LuUsers, required: false, type: "select", options: TARGET_OPTIONS, hint: "untuk AI Match" },
+  { key: "price_min", label: "Harga Minimum", icon: FiDollarSign, required: false, type: "number", placeholder: "15000" },
+  { key: "price_max", label: "Harga Maksimum", icon: FiDollarSign, required: false, type: "number", placeholder: "50000" },
+  { key: "booth_budget_max", label: "Budget Booth Max", icon: LuWallet, required: false, type: "number", placeholder: "500000", hint: "bobot 20% AI Match" },
+  { key: "description", label: "Deskripsi Usaha", icon: FiFileText, required: false, type: "textarea", rows: 4, maxLength: 1000, placeholder: "Ceritakan usaha kamu, ciri khas produk..." },
 ];
 
 export default function UmkmProfile() {
@@ -29,7 +50,6 @@ export default function UmkmProfile() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Stats dari applications
   const totalApplications = applications.length;
   const acceptedApplications = applications.filter(a => a.status === "approved").length;
   const attendedEvents = new Set(applications.filter(a => a.status === "approved").map(a => a.event_id)).size;
@@ -58,7 +78,8 @@ export default function UmkmProfile() {
       setMessage({ type: "success", text: "Profil berhasil diperbarui." });
       setIsEditing(false);
     } catch (err) {
-      setMessage({ type: "error", text: err.response?.data?.message || "Gagal menyimpan." });
+      const msg = err.response?.data?.message || err.response?.data?.errors && Object.values(err.response.data.errors).flat().join(", ") || "Gagal menyimpan.";
+      setMessage({ type: "error", text: msg });
     } finally {
       setSaving(false);
     }
@@ -80,13 +101,16 @@ export default function UmkmProfile() {
 
   const displayData = { ...user, ...profile };
 
+  // completeness untuk hint
+  const aiFields = ["location", "target_audience", "booth_budget_max", "description"];
+  const filled = aiFields.filter((k) => profile?.[k] != null && String(profile[k]).trim() !== "").length;
+  const completeness = Math.round((filled / aiFields.length) * 100);
+
   return (
     <div className="min-h-screen bg-[#FAFAF9] text-[#111827]">
       <UmkmNavbar />
 
-      {/* HERO HEADER */}
       <div className="relative overflow-hidden bg-gradient-to-br from-[#0B2340] via-[#0B2340] to-[#1677C8]">
-        {/* Decorative dots */}
         <div className="pointer-events-none absolute right-0 top-0 opacity-20">
           <div className="grid grid-cols-12 gap-4 p-8">
             {Array.from({ length: 72 }).map((_, i) => (
@@ -113,22 +137,21 @@ export default function UmkmProfile() {
                 </div>
               </div>
             </div>
-
             <div className="flex-1">
               <div className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold text-white/80 backdrop-blur-sm">
                 <FiShield size={11} />
                 Akun UMKM
               </div>
               <h1 className="text-3xl font-extrabold tracking-tight text-white md:text-5xl">
-                {user?.name || "Memuat..."}
+                {displayData?.business_name || user?.name || "Memuat..."}
               </h1>
               <div className="mt-3 flex flex-wrap items-center justify-center gap-4 text-sm text-white/70 md:justify-start">
                 <span className="flex items-center gap-1.5">
                   <FiMail size={13} /> {user?.email}
                 </span>
+                {displayData?.location && <span className="flex items-center gap-1.5"><FiMapPin size={13} /> {displayData.location}</span>}
               </div>
             </div>
-
             <button
               type="button"
               onClick={() => setIsEditing(true)}
@@ -138,7 +161,6 @@ export default function UmkmProfile() {
               Edit Profil
             </button>
           </div>
-
           <div className="pointer-events-none absolute bottom-0 left-0 right-0">
             <svg viewBox="0 0 1440 60" className="w-full" fill="none">
               <path d="M0 60L48 55C96 50 192 40 288 35C384 30 480 30 576 32C672 34 768 38 864 40C960 42 1056 42 1152 38C1248 34 1344 26 1392 22L1440 18V60H0Z" fill="#FAFAF9" />
@@ -148,6 +170,18 @@ export default function UmkmProfile() {
       </div>
 
       <main className="relative mx-auto max-w-[900px] px-5 py-8 md:px-8 md:py-12">
+        {!isEditing && completeness < 100 && (
+          <div className="mb-6 flex items-center justify-between gap-3 rounded-2xl border border-[#E6ECF3] bg-white px-5 py-4 shadow-sm">
+            <div>
+              <p className="text-sm font-bold text-[#0B2340]">Lengkapi profil untuk AI Match</p>
+              <p className="text-xs text-[#64748B]">{filled}/{aiFields.length} field penting terisi — isinya biar skor kamu tinggi di pencarian School.</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-extrabold text-[#1677C8]">{completeness}%</span>
+              <button onClick={() => setIsEditing(true)} className="rounded-full bg-[#0B2340] px-4 py-2 text-xs font-bold text-white hover:bg-[#123A6B]">Lengkapi</button>
+            </div>
+          </div>
+        )}
 
         {message && (
           <div className={`mb-6 flex items-center gap-3 rounded-2xl px-5 py-4 text-sm font-semibold ${

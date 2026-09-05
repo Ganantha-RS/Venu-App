@@ -85,6 +85,43 @@ class AuthController extends Controller
                 'string',
                 'max:255',
             ],
+
+            'location' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+            'target_audience' => [
+                'nullable',
+                'string',
+                Rule::in(['pelajar', 'remaja', 'umum', 'keluarga']),
+            ],
+
+            'price_min' => [
+                'nullable',
+                'integer',
+                'min:0',
+            ],
+
+            'price_max' => [
+                'nullable',
+                'integer',
+                'min:0',
+                'gte:price_min',
+            ],
+
+            'booth_budget_max' => [
+                'nullable',
+                'integer',
+                'min:0',
+            ],
+
+            'description' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
         ]);
 
         $result = DB::transaction(function () use ($validated) {
@@ -125,7 +162,12 @@ class AuthController extends Controller
                     'category' => $validated['category'],
                     'products' => $validated['products'] ?? null,
                     'phone' => $validated['phone'] ?? null,
-                    'location' => null,
+                    'location' => $validated['location'] ?? null,
+                    'target_audience' => $validated['target_audience'] ?? null,
+                    'price_min' => $validated['price_min'] ?? null,
+                    'price_max' => $validated['price_max'] ?? null,
+                    'booth_budget_max' => $validated['booth_budget_max'] ?? null,
+                    'description' => $validated['description'] ?? null,
                 ]);
             }
 

@@ -31,6 +31,22 @@ export default function Register() {
   const [umkmPhone, setUmkmPhone] = useState("");
   const [umkmEmail, setUmkmEmail] = useState("");
   const [umkmPassword, setUmkmPassword] = useState("");
+  // Field AI Match — biar muncul bagus di School
+  const [umkmLocation, setUmkmLocation] = useState("");
+  const [umkmTargetAudience, setUmkmTargetAudience] = useState("");
+  const [umkmPriceMin, setUmkmPriceMin] = useState("");
+  const [umkmPriceMax, setUmkmPriceMax] = useState("");
+  const [umkmBoothBudget, setUmkmBoothBudget] = useState("");
+  const [umkmDescription, setUmkmDescription] = useState("");
+
+  const UMKM_LOCATIONS = ["Jakarta Timur", "Jakarta Selatan", "Jakarta Barat", "Jakarta Pusat", "Jakarta Utara", "Bogor", "Depok", "Tangerang", "Bekasi"];
+  const UMKM_TARGETS = [
+    { value: "", label: "Pilih target pasar" },
+    { value: "pelajar", label: "Pelajar" },
+    { value: "remaja", label: "Remaja" },
+    { value: "umum", label: "Umum" },
+    { value: "keluarga", label: "Keluarga" },
+  ];
 
   const handleNextStep = () => {
     if (!role) {
@@ -61,10 +77,16 @@ export default function Register() {
         role,
         business_name: businessName,
         category,
-        products,
-        phone: umkmPhone,
+        products: products || null,
+        phone: umkmPhone || null,
         email: umkmEmail,
         password: umkmPassword,
+        location: umkmLocation || null,
+        target_audience: umkmTargetAudience || null,
+        price_min: umkmPriceMin ? Number(umkmPriceMin.replace(/\D/g, "")) : null,
+        price_max: umkmPriceMax ? Number(umkmPriceMax.replace(/\D/g, "")) : null,
+        booth_budget_max: umkmBoothBudget ? Number(umkmBoothBudget.replace(/\D/g, "")) : null,
+        description: umkmDescription?.trim() || null,
       };
 
     try {
@@ -380,6 +402,80 @@ export default function Register() {
                       onChange={(e) => setUmkmPassword(e.target.value)}
                       className="mt-1 w-full rounded-full border border-navy/10 px-4 py-2.5 text-xs focus:border-navy focus:outline-none"
                     />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-bold text-navy">Lokasi Usaha</label>
+                      <select
+                        value={umkmLocation}
+                        onChange={(e) => setUmkmLocation(e.target.value)}
+                        className="mt-1 w-full rounded-full border border-navy/10 bg-white px-4 py-2.5 text-xs focus:border-navy focus:outline-none"
+                      >
+                        <option value="">Pilih lokasi</option>
+                        {UMKM_LOCATIONS.map((loc) => <option key={loc} value={loc}>{loc}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-navy">Target Pasar</label>
+                      <select
+                        value={umkmTargetAudience}
+                        onChange={(e) => setUmkmTargetAudience(e.target.value)}
+                        className="mt-1 w-full rounded-full border border-navy/10 bg-white px-4 py-2.5 text-xs focus:border-navy focus:outline-none"
+                      >
+                        {UMKM_TARGETS.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-xs font-bold text-navy">Harga Minimum (Rp)</label>
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="15000"
+                        value={umkmPriceMin}
+                        onChange={(e) => setUmkmPriceMin(e.target.value.replace(/\D/g, ""))}
+                        className="mt-1 w-full rounded-full border border-navy/10 bg-white px-4 py-2.5 text-xs focus:border-navy focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-xs font-bold text-navy">Harga Maksimum (Rp)</label>
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        placeholder="50000"
+                        value={umkmPriceMax}
+                        onChange={(e) => setUmkmPriceMax(e.target.value.replace(/\D/g, ""))}
+                        className="mt-1 w-full rounded-full border border-navy/10 bg-white px-4 py-2.5 text-xs focus:border-navy focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-bold text-navy">Budget Maksimal Booth</label>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="500000"
+                      value={umkmBoothBudget}
+                      onChange={(e) => setUmkmBoothBudget(e.target.value.replace(/\D/g, ""))}
+                      className="mt-1 w-full rounded-full border border-navy/10 bg-white px-4 py-2.5 text-xs focus:border-navy focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-bold text-navy">Deskripsi Usaha</label>
+                    <textarea
+                      rows={4}
+                      maxLength={1000}
+                      placeholder="Ceritakan usaha kamu..."
+                      value={umkmDescription}
+                      onChange={(e) => setUmkmDescription(e.target.value)}
+                      className="mt-1 w-full resize-none rounded-2xl border border-navy/10 bg-white px-4 py-2.5 text-xs leading-5 focus:border-navy focus:outline-none"
+                    />
+                    <p className="mt-1 text-right text-[11px] text-[#94A3B8]">{umkmDescription.length}/1000</p>
                   </div>
                 </>
               )}

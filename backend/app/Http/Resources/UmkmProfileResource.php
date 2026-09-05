@@ -18,7 +18,9 @@ class UmkmProfileResource extends JsonResource
             'location' => $this->location,
             'price_min' => $this->price_min,
             'price_max' => $this->price_max,
+            'booth_budget_max' => $this->booth_budget_max,
             'target_audience' => $this->target_audience,
+            'phone' => $this->phone,
             'logo' => $this->logo,
         ];
     }

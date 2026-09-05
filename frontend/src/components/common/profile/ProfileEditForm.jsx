@@ -2,6 +2,67 @@ import { useState, useEffect } from "react";
 import { FiX, FiCheck, FiLoader } from "react-icons/fi";
 import { LuGraduationCap } from "react-icons/lu";
 
+function FieldInput({ field, value, onChange }) {
+  const type = field.type || "text";
+
+  if (type === "select") {
+    return (
+      <select
+        id={field.key}
+        value={value || ""}
+        onChange={(e) => onChange(field.key, e.target.value)}
+        className="w-full rounded-xl border border-[#E7E5E4] bg-white px-4 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#1677C8] focus:ring-2 focus:ring-[#1677C8]/10"
+      >
+        {(field.options || []).map((opt) => (
+          <option key={String(opt.value)} value={opt.value}>{opt.label}</option>
+        ))}
+      </select>
+    );
+  }
+
+  if (type === "textarea") {
+    return (
+      <div>
+        <textarea
+          id={field.key}
+          value={value || ""}
+          onChange={(e) => onChange(field.key, e.target.value)}
+          placeholder={field.placeholder || `Masukkan ${field.label.toLowerCase()}`}
+          rows={field.rows || 3}
+          maxLength={field.maxLength}
+          className="w-full resize-none rounded-xl border border-[#E7E5E4] bg-white px-4 py-2.5 text-sm leading-5 text-[#111827] placeholder:text-[#9CA3AF] outline-none transition focus:border-[#1677C8] focus:ring-2 focus:ring-[#1677C8]/10"
+        />
+        {field.maxLength && <p className="mt-1 text-right text-[11px] text-[#9CA3AF]">{String(value || "").length}/{field.maxLength}</p>}
+      </div>
+    );
+  }
+
+  if (type === "number") {
+    return (
+      <input
+        id={field.key}
+        type="text"
+        inputMode="numeric"
+        value={value ?? ""}
+        onChange={(e) => onChange(field.key, e.target.value.replace(/\D/g, ""))}
+        placeholder={field.placeholder || "0"}
+        className="w-full rounded-xl border border-[#E7E5E4] bg-white px-4 py-2.5 text-sm text-[#111827] placeholder:text-[#9CA3AF] outline-none transition focus:border-[#1677C8] focus:ring-2 focus:ring-[#1677C8]/10"
+      />
+    );
+  }
+
+  return (
+    <input
+      id={field.key}
+      type="text"
+      value={value || ""}
+      onChange={(e) => onChange(field.key, e.target.value)}
+      placeholder={field.placeholder || `Masukkan ${field.label.toLowerCase()}`}
+      className="w-full rounded-xl border border-[#E7E5E4] bg-white px-4 py-2.5 text-sm text-[#111827] placeholder:text-[#9CA3AF] outline-none transition focus:border-[#1677C8] focus:ring-2 focus:ring-[#1677C8]/10"
+    />
+  );
+}
+
 export default function ProfileEditForm({ title, fields, apiFetch, apiSave, onSave, onCancel, saving }) {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -26,7 +87,18 @@ export default function ProfileEditForm({ title, fields, apiFetch, apiSave, onSa
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(formData);
+    // normalize numeric: "" -> null, "123" -> 123
+    const payload = { ...formData };
+    fields.forEach((f) => {
+      if (f.type === "number") {
+        const v = String(payload[f.key] ?? "").trim();
+        payload[f.key] = v === "" ? null : Number(v);
+      }
+      if (f.type === "select" && payload[f.key] === "") {
+        payload[f.key] = null;
+      }
+    });
+    onSave(payload);
   };
 
   if (loading) {
@@ -40,7 +112,6 @@ export default function ProfileEditForm({ title, fields, apiFetch, apiSave, onSa
 
   return (
     <form onSubmit={handleSubmit} className="overflow-hidden rounded-2xl border border-[#E7E5E4] bg-white shadow-sm">
-      {/* Header */}
       <div className="flex items-center justify-between border-b border-[#F1F0EF] bg-[#FAFAF9] px-6 py-4">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#EFF6FF]">
@@ -60,32 +131,24 @@ export default function ProfileEditForm({ title, fields, apiFetch, apiSave, onSa
         </button>
       </div>
 
-      {/* Fields */}
       <div className="divide-y divide-[#F1F0EF]">
         {fields.map((field) => {
-          const value = formData[field.key] || "";
+          const value = formData[field.key] ?? "";
           return (
             <div key={field.key} className="grid grid-cols-1 gap-2 px-6 py-4 md:grid-cols-[200px_1fr] md:items-center">
               <div className="flex items-center gap-2">
                 <field.icon size={15} className="text-[#9CA3AF]" />
                 <label htmlFor={field.key} className="text-xs font-semibold text-[#6B7280]">
                   {field.label} {field.required && <span className="text-red-500">*</span>}
+                  {field.hint && <span className="ml-1 font-normal text-[#9CA3AF]">· {field.hint}</span>}
                 </label>
               </div>
-              <input
-                id={field.key}
-                type="text"
-                value={value}
-                onChange={(e) => handleChange(field.key, e.target.value)}
-                placeholder={`Masukkan ${field.label.toLowerCase()}`}
-                className="w-full rounded-xl border border-[#E7E5E4] bg-white px-4 py-2.5 text-sm text-[#111827] placeholder:text-[#9CA3AF] outline-none transition focus:border-[#1677C8] focus:ring-2 focus:ring-[#1677C8]/10"
-              />
+              <FieldInput field={field} value={value} onChange={handleChange} />
             </div>
           );
         })}
       </div>
 
-      {/* Actions */}
       <div className="flex items-center justify-end gap-3 border-t border-[#F1F0EF] bg-[#FAFAF9] px-6 py-4">
         <button
           type="button"
