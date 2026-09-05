@@ -17,15 +17,11 @@ const TARGET_OPTIONS = [
   { value: "keluarga", label: "Keluarga" },
 ];
 const CATEGORY_OPTIONS = [
-  { value: "Kuliner", label: "Kuliner" },
   { value: "Fashion", label: "Fashion" },
-  { value: "Kriya/Craft", label: "Kriya/Craft" },
-  { value: "Jasa", label: "Jasa" },
-  { value: "Lainnya", label: "Lainnya" },
+  { value: "Aksesoris", label: "Aksesoris" },
+  { value: "Kerajinan", label: "Kerajinan" },
   { value: "Makanan", label: "Makanan" },
   { value: "Minuman", label: "Minuman" },
-  { value: "Kerajinan", label: "Kerajinan" },
-  { value: "Aksesoris", label: "Aksesoris" },
 ];
 
 const UMKM_FIELDS = [

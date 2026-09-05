@@ -26,7 +26,7 @@ export default function Register() {
 
   // Form states untuk UMKM
   const [businessName, setBusinessName] = useState("");
-  const [category, setCategory] = useState("Kuliner");
+  const [category, setCategory] = useState("Fashion");
   const [products, setProducts] = useState("");
   const [umkmPhone, setUmkmPhone] = useState("");
   const [umkmEmail, setUmkmEmail] = useState("");
@@ -346,11 +346,11 @@ export default function Register() {
                         onChange={(e) => setCategory(e.target.value)}
                         className="mt-1 w-full rounded-full border border-navy/10 px-4 py-2.5 text-xs focus:border-navy focus:outline-none bg-white"
                       >
-                        <option value="Kuliner">Kuliner</option>
                         <option value="Fashion">Fashion</option>
-                        <option value="Kriya/Craft">Kriya/Craft</option>
-                        <option value="Jasa">Jasa</option>
-                        <option value="Lainnya">Lainnya</option>
+                        <option value="Aksesoris">Aksesoris</option>
+                        <option value="Kerajinan">Kerajinan</option>
+                        <option value="Makanan">Makanan</option>
+                        <option value="Minuman">Minuman</option>
                       </select>
                     </div>
                   </div>
