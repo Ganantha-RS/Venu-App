@@ -25,8 +25,9 @@ export default function SchoolHome() {
         <StatsBar />
 
         <AiAssistantIntro
-          description="Disini aku akan membantu kamu menyinkronkan event kamu dengan UMKM yang bersedia untuk bekerjasama."
-          buttonText="Ayo sinkronkan"
+          description="Disini aku akan membantu kamu menemukan UMKM yang sesuai dengan kebutuhan event sekolahmu."
+          buttonText="Cari UMKM"
+          targetPath="/school/ai-match"
         />
 
         <AvailableUmkm umkms={umkms} isLoading={isLoading} />

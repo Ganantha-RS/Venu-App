@@ -21,10 +21,11 @@ export default function UmkmHome() {
                 <AiAssistantIntro
                     description="Disini aku akan membantu kamu menyinkronkan usaha kamu dengan event yang sedang berlangsung."
                     buttonText="Ayo sinkronkan"
+                    targetPath="/umkm/ai-match"
                 />
                 <UmkmCtaBanner />
                 <NearbyEvents />
-                
+
                 <Footer />
             </main>
         </div>

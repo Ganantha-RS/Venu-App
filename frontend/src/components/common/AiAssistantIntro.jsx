@@ -1,15 +1,17 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 
 export default function AiAssistantIntro({
     description = "Disini aku akan membantu kamu menyinkronkan usaha kamu dengan event yang sedang berlangsung.",
     buttonText = "Ayo sinkronkan",
-    onClick,
+    targetPath = "/umkm/ai-match",
 }) {
     const navigate = useNavigate();
+
     const handleClick = () => {
-        navigate("/umkm/ai-match");
+        navigate(targetPath);
     };
+
     return (
         <section className="relative overflow-hidden bg-white py-8 md:py-25">
             <div
