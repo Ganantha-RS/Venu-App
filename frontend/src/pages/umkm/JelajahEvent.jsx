@@ -81,12 +81,52 @@ export default function JelajahEvent() {
   };
 
   const resetFilter = () => { setSearch(""); setCategory(""); setLocation(""); setMaxPrice(""); };
-  const hasActiveFilter = search || category || location || maxPrice;
+  const hasActiveFilter = Boolean(search.trim() || category || location || maxPrice);
   const activeFilterCount = [category, location, maxPrice].filter(Boolean).length + (search.trim() ? 1 : 0);
-  const heroPreview = events.slice(0, 2);
+
+  const displayEvents = useMemo(() => {
+    if (!Array.isArray(events)) return [];
+    return events.filter((ev) => {
+      // 1. Search filter
+      if (search.trim()) {
+        const q = search.trim().toLowerCase();
+        const nameMatch = ev.name?.toLowerCase().includes(q);
+        const descMatch = ev.description?.toLowerCase().includes(q);
+        const locMatch = ev.location?.toLowerCase().includes(q);
+        const schoolMatch = (ev.school?.name || ev.school_name || "")
+          .toLowerCase()
+          .includes(q);
+        if (!nameMatch && !descMatch && !locMatch && !schoolMatch) return false;
+      }
+
+      // 2. Category filter
+      if (category) {
+        const cats = ev.categories || (ev.category ? [ev.category] : []);
+        const hasCat = ev.category === category || cats.includes(category);
+        if (!hasCat) return false;
+      }
+
+      // 3. Location filter
+      if (location) {
+        const evLoc = (ev.location || "").toLowerCase();
+        const reqLoc = location.toLowerCase();
+        if (!evLoc.includes(reqLoc) && !reqLoc.includes(evLoc)) return false;
+      }
+
+      // 4. Max booth price filter
+      if (maxPrice) {
+        const limitP = Number(maxPrice);
+        if (ev.booth_price && Number(ev.booth_price) > limitP) return false;
+      }
+
+      return true;
+    });
+  }, [events, search, category, location, maxPrice]);
+
+  const heroPreview = displayEvents.length > 0 ? displayEvents.slice(0, 2) : events.slice(0, 2);
 
   return (
-    <div className="min-h-screenfont-sans text-[#111827]">
+    <div className="min-h-screen font-sans text-[#111827]">
       <UmkmNavbar />
 
       <main className="relative overflow-hidden">
@@ -121,7 +161,7 @@ export default function JelajahEvent() {
               <div className="mt-5 flex flex-wrap items-center gap-2 text-xs">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 font-semibold text-[#0B2340] ring-1 ring-[#E2E8F0]">
                   <span className="h-2 w-2 rounded-full bg-[#16A34A] animate-pulse" />
-                  {isLoading ? "Memuat…" : `${events.length} event aktif`}
+                  {isLoading ? "Memuat…" : `${displayEvents.length} event aktif`}
                 </span>
                 {hasActiveFilter && (
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-[#E2E8F0] bg-white px-3 py-1.5 font-medium text-[#64748B]">
@@ -194,7 +234,7 @@ export default function JelajahEvent() {
               </div>
               <div className="flex items-center gap-2">
                 <span className="hidden text-xs font-medium text-[#94A3B8] md:inline">
-                  {!isLoading ? `${events.length} event` : "Memuat…"}
+                  {!isLoading ? `${displayEvents.length} event` : "Memuat…"}
                 </span>
                 {hasActiveFilter && (
                   <button type="button" onClick={resetFilter} className="inline-flex items-center gap-1.5 rounded-full border border-[#E2E8F0] bg-white px-3.5 py-2 text-xs font-semibold text-[#64748B] hover:border-[#CBD5E1] hover:text-[#0B2340]">
@@ -268,7 +308,7 @@ export default function JelajahEvent() {
               </div>
             ) : error ? (
               <div className="rounded-2xl border border-red-200 bg-red-50 px-6 py-10 text-center text-sm text-red-600">{error}</div>
-            ) : events.length === 0 ? (
+            ) : displayEvents.length === 0 ? (
               <div className="overflow-hidden rounded-2xl border border-[#E6ECF3] bg-white shadow-sm">
                 <div className="grid md:grid-cols-[1.1fr_0.9fr]">
                   <div className="px-6 py-10 md:px-8 md:py-12">
@@ -306,7 +346,7 @@ export default function JelajahEvent() {
                     <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#FF8A00]">Daftar Event</p>
                     <h2 className="mt-1 text-[18px] font-bold tracking-tight text-[#0B2340] md:text-[20px]">
                       {hasActiveFilter ? "Hasil pencarian" : "Event terbaru"}
-                      <span className="ml-2 align-middle text-xs font-medium text-[#94A3B8]">· {events.length} event</span>
+                      <span className="ml-2 align-middle text-xs font-medium text-[#94A3B8]">· {displayEvents.length} event</span>
                     </h2>
                   </div>
                   <Link to="/umkm/ai-match/hasil" className="hidden items-center gap-1 rounded-full border border-[#E2E8F0] bg-white px-3.5 py-2 text-xs font-semibold text-[#0B2340] hover:border-[#1677C8] hover:text-[#1677C8] md:inline-flex">
@@ -315,7 +355,7 @@ export default function JelajahEvent() {
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {events.map((ev) => {
+                  {displayEvents.map((ev) => {
                     const img = getEventImage(ev);
                     const cats = ev.categories || (ev.category ? [ev.category] : []);
                     const primaryCat = cats[0] || "Makanan";

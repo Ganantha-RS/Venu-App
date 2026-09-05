@@ -217,4 +217,4 @@ npm run preview
 ```
 
 ---
-*Dokumen ini diperbarui secara otomatis berdasarkan audit arsitektur dan kompilasi benchmark frontend VENU.*
+

@@ -47,29 +47,37 @@ const AiMatchIntroContent = () => {
             </p>
           </section>
 
-          <section className="grid gap-7 md:grid-cols-2">
+          <section className="grid gap-6 md:grid-cols-2 md:gap-7">
             {/* Card UMKM -> Event */}
             <div className="group rounded-[18px] border border-slate-200 bg-white p-2 shadow-[0_8px_30px_rgba(11,41,77,0.05)]">
-              <div className="relative min-h-[350px] overflow-hidden rounded-[14px] border border-[#FFB8B8] bg-[#FFF0F0] px-8 py-7">
+              <div className="relative min-h-full overflow-hidden rounded-[14px] border border-[#FFB8B8] bg-[#FFF0F0] px-5 py-6 sm:px-6 sm:py-7 lg:px-8">
                 <div className="absolute -bottom-20 -left-16 h-40 w-40 rounded-full bg-white/40" />
-                <div className="relative z-10 grid h-full grid-cols-[155px_1fr] items-center gap-5">
+
+                <div className="relative z-10 flex h-full flex-col gap-6 sm:grid sm:grid-cols-[130px_1fr] sm:items-center sm:gap-5 lg:grid-cols-[155px_1fr]">
                   <div className="flex flex-col items-center justify-center">
-                    <div className="mb-7 flex h-16 w-16 items-center justify-center">
-                      <img src="/img/logoumkm.png" alt="" />
+                    <div className="mb-4 flex h-14 w-14 items-center justify-center sm:mb-6 sm:h-16 sm:w-16">
+                      <img
+                        src="/img/logoumkm.png"
+                        alt="Logo UMKM"
+                        className="h-full w-full object-contain"
+                      />
                     </div>
-                    <div className="relative">
-                      <img src="/img/UMKM.png" alt="" />
-                    </div>
+
+                    <img
+                      src="/img/UMKM.png"
+                      alt="Ilustrasi UMKM"
+                      className="h-[150px] w-auto object-contain sm:h-[135px] lg:h-[150px]"
+                    />
                   </div>
 
-                  <div>
-                    <h2 className="mb-2 text-[24px] font-bold tracking-[-0.8px]">
+                  <div className="w-full">
+                    <h2 className="mb-2 text-center text-[22px] font-bold tracking-[-0.8px] sm:text-left sm:text-[23px] lg:text-[24px]">
                       <span className="text-[#AF0100]">UMKM</span>{" "}
                       <span className="font-medium text-[#AF0100]">→</span>{" "}
                       <span className="text-[#0B294D]">Event</span>
                     </h2>
 
-                    <p className="mb-5 max-w-[280px] text-[12px] leading-5 text-[#244568]">
+                    <p className="mb-5 text-center text-[13px] leading-5 text-[#244568] sm:max-w-[280px] sm:text-left sm:text-[12px]">
                       Dapatkan rekomendasi event yang paling cocok untuk bisnismu.
                     </p>
 
@@ -80,8 +88,14 @@ const AiMatchIntroContent = () => {
                         "Lokasi strategis",
                         "Budget yang pas",
                       ].map((item) => (
-                        <div key={item} className="flex items-center gap-2 text-[11px] text-[#244568]">
-                          <FiCheckCircle size={14} className="shrink-0 text-[#AF0100]" />
+                        <div
+                          key={item}
+                          className="flex items-start gap-2 text-[12px] leading-5 text-[#244568] sm:text-[11px]"
+                        >
+                          <FiCheckCircle
+                            size={14}
+                            className="mt-0.5 shrink-0 text-[#AF0100]"
+                          />
                           <span>{item}</span>
                         </div>
                       ))}
@@ -90,7 +104,7 @@ const AiMatchIntroContent = () => {
                     <button
                       type="button"
                       onClick={() => navigate("/umkm/ai-match/hasil")}
-                      className="mt-6 flex items-center gap-2 rounded-lg bg-[#C9141A] px-4 py-2.5 text-[11px] font-semibold text-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-[#A90F14]"
+                      className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-[#C9141A] px-4 py-3 text-[12px] font-semibold text-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-[#A90F14] sm:w-auto sm:py-2.5 sm:text-[11px]"
                     >
                       Temukan Event untuk Usahamu
                       <FiArrowRight size={17} />
@@ -102,26 +116,34 @@ const AiMatchIntroContent = () => {
 
             {/* Card Sekolah -> UMKM */}
             <div className="group rounded-[18px] border border-slate-200 bg-white p-2 shadow-[0_8px_30px_rgba(11,41,77,0.05)]">
-              <div className="relative min-h-[350px] overflow-hidden rounded-[14px] border border-[#8BC4FF] bg-[#EEF8FF] px-8 py-7">
+              <div className="relative min-h-full overflow-hidden rounded-[14px] border border-[#8BC4FF] bg-[#EEF8FF] px-5 py-6 sm:px-6 sm:py-7 lg:px-8">
                 <div className="absolute -bottom-24 -right-20 h-52 w-52 rounded-full bg-white/50" />
-                <div className="relative z-10 grid h-full grid-cols-[155px_1fr] items-center gap-5">
+
+                <div className="relative z-10 flex h-full flex-col gap-6 sm:grid sm:grid-cols-[130px_1fr] sm:items-center sm:gap-5 lg:grid-cols-[155px_1fr]">
                   <div className="flex flex-col items-center justify-center">
-                    <div className="mb-7 flex h-16 w-16 items-center justify-center">
-                      <img src="/img/logosekolah.png" alt="" />
+                    <div className="mb-4 flex h-14 w-14 items-center justify-center sm:mb-6 sm:h-16 sm:w-16">
+                      <img
+                        src="/img/logosekolah.png"
+                        alt="Logo Sekolah"
+                        className="h-full w-full object-contain"
+                      />
                     </div>
-                    <div className="relative h-[140px] w-[145px]">
-                      <img src="/img/Sekolah.png" alt="" />
-                    </div>
+
+                    <img
+                      src="/img/Sekolah.png"
+                      alt="Ilustrasi Sekolah"
+                      className="h-[150px] w-auto object-contain sm:h-[135px] lg:h-[150px]"
+                    />
                   </div>
 
-                  <div>
-                    <h2 className="mb-2 text-[24px] font-bold tracking-[-0.8px]">
+                  <div className="w-full">
+                    <h2 className="mb-2 text-center text-[22px] font-bold tracking-[-0.8px] sm:text-left sm:text-[23px] lg:text-[24px]">
                       <span className="text-[#2575B8]">Sekolah</span>{" "}
                       <span className="font-medium text-[#2575B8]">→</span>{" "}
                       <span className="text-[#001F3F]">UMKM</span>
                     </h2>
 
-                    <p className="mb-5 max-w-[280px] text-[12px] leading-5 text-[#244568]">
+                    <p className="mb-5 text-center text-[13px] leading-5 text-[#244568] sm:max-w-[280px] sm:text-left sm:text-[12px]">
                       Temukan UMKM yang sesuai dengan kebutuhan event sekolahmu.
                     </p>
 
@@ -132,8 +154,14 @@ const AiMatchIntroContent = () => {
                         "Lihat profil & portofolio",
                         "Mudah ajukan kerja sama",
                       ].map((item) => (
-                        <div key={item} className="flex items-center gap-2 text-[11px] text-[#244568]">
-                          <FiCheckCircle size={14} className="shrink-0 text-[#1677FF]" />
+                        <div
+                          key={item}
+                          className="flex items-start gap-2 text-[12px] leading-5 text-[#244568] sm:text-[11px]"
+                        >
+                          <FiCheckCircle
+                            size={14}
+                            className="mt-0.5 shrink-0 text-[#1677FF]"
+                          />
                           <span>{item}</span>
                         </div>
                       ))}
@@ -142,7 +170,7 @@ const AiMatchIntroContent = () => {
                     <button
                       type="button"
                       onClick={() => navigate("/school/ai-match/hasil")}
-                      className="mt-6 inline-flex items-center gap-2 rounded-lg bg-[#2575B8] px-4 py-2.5 text-[11px] font-semibold text-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-[#1A5A9E]"
+                      className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-[#2575B8] px-4 py-3 text-[12px] font-semibold text-white shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-[#1A5A9E] sm:w-auto sm:py-2.5 sm:text-[11px]"
                     >
                       Temukan UMKM untuk Eventmu
                       <FiArrowRight size={17} />

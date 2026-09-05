@@ -1,20 +1,20 @@
 import { useEffect, useState, useCallback } from "react";
 import { getEvents } from "./eventApi";
 
-export function useEvents(initialParams = {}) {
+export function useEvents(fetchParams = {}) {
   const [events, setEvents] = useState([]);
   const [pagination, setPagination] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [params, setParams] = useState(initialParams);
 
-  const reload = useCallback(async (nextParams) => {
-    const p = nextParams ?? params;
+  const paramKey = JSON.stringify(fetchParams);
+
+  const reload = useCallback(async (overrideParams) => {
+    const p = overrideParams ?? fetchParams;
     setIsLoading(true);
     setError(null);
     try {
       const res = await getEvents(p);
-      // res = { success, message, data: { data: [...], meta, links } } or array
       const raw = res?.data ?? res;
       const list = Array.isArray(raw) ? raw : raw?.data ?? [];
       setEvents(Array.isArray(list) ? list : []);
@@ -26,9 +26,12 @@ export function useEvents(initialParams = {}) {
     } finally {
       setIsLoading(false);
     }
-  }, [params]);
+  }, [paramKey]);
 
-  useEffect(() => { reload(params); }, [reload, params]);
+  useEffect(() => {
+    reload();
+  }, [reload, paramKey]);
 
-  return { events, pagination, isLoading, error, params, setParams, reload };
+  return { events, pagination, isLoading, error, reload };
 }
+

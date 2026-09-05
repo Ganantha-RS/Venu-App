@@ -21,7 +21,11 @@ class EventDiscoveryController extends Controller
             ->with('school');
 
         if ($request->filled('category')) {
-            $query->where('category', $request->category);
+            $category = $request->category;
+            $query->where(function ($q) use ($category) {
+                $q->where('category', $category)
+                  ->orWhereJsonContains('categories', $category);
+            });
         }
 
         if ($request->filled('location')) {
@@ -41,7 +45,15 @@ class EventDiscoveryController extends Controller
         }
 
         if ($request->filled('search')) {
-            $query->where('name', 'like', "%{$request->search}%");
+            $search = trim($request->search);
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('location', 'like', "%{$search}%")
+                  ->orWhereHas('school', function ($sq) use ($search) {
+                      $sq->where('school_name', 'like', "%{$search}%");
+                  });
+            });
         }
 
         /*
