@@ -1,47 +1,53 @@
-FROM php:8.4-cli
+FROM php:8.3-fpm-alpine
 
-RUN apt-get update && apt-get install -y \
-    git \
-    unzip \
+WORKDIR /var/www
+
+# Install system dependencies, Nginx, Supervisor, and tools
+RUN apk add --no-cache \
+    nginx \
+    supervisor \
+    netcat-openbsd \
     curl \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
     libzip-dev \
-    libicu-dev \
-    libxml2-dev \
-    libonig-dev \
-    ca-certificates \
-    && docker-php-ext-install \
+    icu-dev \
+    oniguruma-dev \
+    bash
+
+# Install PHP extensions
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions && \
+    install-php-extensions \
     pdo_mysql \
+    pdo_sqlite \
     mbstring \
+    zip \
+    gd \
     bcmath \
     intl \
-    xml \
-    zip \
-    opcache \
-    && rm -rf /var/lib/apt/lists/*
+    opcache
 
+# Copy Composer binary
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html
+# Copy Nginx & Supervisor configuration
+COPY docker/nginx.conf /etc/nginx/http.d/default.conf
+COPY docker/supervisord.conf /etc/supervisord.conf
+COPY docker/php.ini /usr/local/etc/php/conf.d/custom.ini
 
-COPY composer.json composer.lock ./
+# Copy project source code
+COPY . /var/www
 
-RUN composer install \
-    --no-dev \
-    --no-interaction \
-    --prefer-dist \
-    --optimize-autoloader \
-    --no-scripts
+# Install Composer dependencies
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-COPY . .
+# Set directory permissions and entrypoint
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache && \
+    chmod -R 775 /var/www/storage /var/www/bootstrap/cache && \
+    chmod +x /var/www/docker-entrypoint.sh
 
-RUN mkdir -p \
-    storage/framework/cache \
-    storage/framework/sessions \
-    storage/framework/views \
-    storage/logs \
-    bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+EXPOSE 8000
 
-EXPOSE 10000
-
-CMD ["sh", "-c", "php artisan migrate --force && php artisan optimize:clear && php artisan config:cache && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}"]
+ENTRYPOINT ["/var/www/docker-entrypoint.sh"]
