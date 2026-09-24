@@ -33,6 +33,15 @@ php artisan storage:link --force || true
 echo "Running database migrations..."
 php artisan migrate --force
 
+# Smart Auto-Seed: Jika database baru (tabel user kosong), otomatis isi data seeder
+USER_COUNT=$(php artisan tinker --execute="echo \App\Models\User::count();" 2>/dev/null || echo "0")
+if [ "$USER_COUNT" = "0" ]; then
+    echo "Fresh database detected (0 users). Running database seeder..."
+    php artisan db:seed --force || true
+else
+    echo "Database already initialized ($USER_COUNT users found). Skipping seeder."
+fi
+
 # Production optimizations
 if [ "$APP_ENV" = "production" ]; then
     echo "Optimizing configurations for production..."
